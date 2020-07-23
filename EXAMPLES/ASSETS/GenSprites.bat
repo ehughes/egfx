@@ -1,0 +1,1 @@
+eGFX_Tools GenerateSprites Sprites all
