@@ -1,22 +1,16 @@
 #include "../../eGFX.h"
 
-
 #ifndef eGFX_DISPLAY_DRIVER_PRESENT
 
-  #ifndef eGFX_DRIVER_SDL
-  #define eGFX_DRIVER_SDL
-
- #define eGFX_DISPLAY_DRIVER_PRESENT
-
- #define SDL_COLOR eGFX_IMAGE_PLANE_16BPP_RGB565
-
+  #ifndef eGFX_DRIVER_STUB
+  #define eGFX_DRIVER_STUB
 
   /*
       Required symbols for any driver
   */
 
-  #define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 480)
-  #define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 480)
+  #define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 128)
+  #define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 64)
 
   /*
       eGFX_InitDriver() should do any hardware related init for the display and
@@ -43,10 +37,11 @@
       A driver should expose at least one back buffer that is the physical screen size and have
       a matching color space.
   */
-	
- #define eGFX_NUM_BACKBUFFERS 2
 
-  extern eGFX_ImagePlane eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS];
+ 
+#define eGFX_NUM_BACKBUFFERS	2
+
+extern eGFX_ImagePlane eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS];
 
   /*
    *  Integer value 0 (off) to 100 (full on)
@@ -54,15 +49,6 @@
    */
 
   extern void eGFX_SetBacklight(uint8_t BacklightValue);
-
-
-  /*
-  
-  Some SDL Specific stuff to make the example work
-  
-  */
-  int ProcessSDL_Events();
-  void eGFX_SDL_Quit();
 
   #endif
 

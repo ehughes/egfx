@@ -139,7 +139,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)/../include;$(SolutionDir)/../../../SRC;$(SolutionDir)/../../../EXAMPLES;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/../include;$(SolutionDir)/../../../CONFIG;$(SolutionDir)/../../../CONFIG/INPUT_DRIVERS/SDL;$(SolutionDir)/../../../CONFIG/DISPLAY_DRIVERS/SDL;$(SolutionDir)/../../../SRC;$(SolutionDir)/../../../EXAMPLES;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -165,7 +165,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)/../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/../include;$(SolutionDir)/../../../CONFIG;$(SolutionDir)/../../../CONFIG/INPUT_DRIVERS/SDL;$(SolutionDir)/../../../CONFIG/DISPLAY_DRIVERS/SDL;$(SolutionDir)/../../../CONFIG/DISPLAY_DRIVERS/SDL;$(SolutionDir)/../../../CONFIG/INPUT_DRIVERS/SDL;$(SolutionDir)../../../CONFIG/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -202,6 +202,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\CONFIG\DISPLAY_DRIVERS\SDL\eGFX_DisplayDriver_SDL.c" />
+    <ClCompile Include="..\..\..\..\..\CONFIG\INPUT_DRIVERS\SDL\eGFX_InputDriver_SDL.c" />
     <ClCompile Include="..\..\..\..\..\SRC\Core\eGFX_Animator.c" />
     <ClCompile Include="..\..\..\..\..\SRC\Core\eGFX_Blit.c" />
     <ClCompile Include="..\..\..\..\..\SRC\Core\eGFX_Obj.c" />
@@ -215,8 +217,6 @@
     <ClCompile Include="..\..\..\..\..\SRC\Core\Fonts\FONT_3_5_1BPP\FONT_3_5_1BPP.c" />
     <ClCompile Include="..\..\..\..\..\SRC\Core\Fonts\FONT_5_7_1BPP\FONT_5_7_1BPP.c" />
     <ClCompile Include="..\..\..\..\..\SRC\Core\Utilities\eGFX_BMP.c" />
-    <ClCompile Include="..\..\..\..\..\SRC\Drivers\Display\eGFX_Driver_SDL.c" />
-    <ClCompile Include="..\..\..\..\..\SRC\Drivers\Input\eGFX_InputDriverStub.c" />
     <ClCompile Include="..\..\..\..\..\SRC\Input\eGFX_Input.c" />
     <ClCompile Include="..\..\..\..\..\SRC\UI\eGFX_Activity.c" />
     <ClCompile Include="..\..\..\..\ACTIVITIES\Activity__CircleTest.c" />
@@ -228,6 +228,9 @@
     <ClCompile Include="..\..\..\test\eGFX_Test.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\CONFIG\DISPLAY_DRIVERS\SDL\eGFX_DisplayDriver_SDL.h" />
+    <ClInclude Include="..\..\..\..\..\CONFIG\eGFX_Config.h" />
+    <ClInclude Include="..\..\..\..\..\CONFIG\INPUT_DRIVERS\SDL\eGFX_InputDriver_SDL.h" />
     <ClInclude Include="..\..\..\..\..\SRC\Core\eGFX_Animator.h" />
     <ClInclude Include="..\..\..\..\..\SRC\Core\eGFX_Blit.h" />
     <ClInclude Include="..\..\..\..\..\SRC\Core\eGFX_DataTypes.h" />
@@ -242,11 +245,7 @@
     <ClInclude Include="..\..\..\..\..\SRC\Core\Fonts\FONT_3_5_1BPP\FONT_3_5_1BPP.h" />
     <ClInclude Include="..\..\..\..\..\SRC\Core\Fonts\FONT_5_7_1BPP\FONT_5_7_1BPP.h" />
     <ClInclude Include="..\..\..\..\..\SRC\Core\Utilities\eGFX_BMP.h" />
-    <ClInclude Include="..\..\..\..\..\SRC\Drivers\Display\eGFX_Driver_SDL.h" />
-    <ClInclude Include="..\..\..\..\..\SRC\Drivers\Input\eGFX_InputDriverStub.h" />
     <ClInclude Include="..\..\..\..\..\SRC\eGFX.h" />
-    <ClInclude Include="..\..\..\..\..\SRC\eGFX_Config.h" />
-    <ClInclude Include="..\..\..\..\..\SRC\eGFX_Driver.h" />
     <ClInclude Include="..\..\..\..\..\SRC\Input\eGFX_Input.h" />
     <ClInclude Include="..\..\..\..\..\SRC\Input\eGFX_InputTypes.h" />
     <ClInclude Include="..\..\..\..\..\SRC\UI\eGFX_Activity.h" />

@@ -10,13 +10,7 @@ void eGFX_WEAK eGFX_Blit(eGFX_ImagePlane *Destination,
 	int32_t y,
 	const eGFX_ImagePlane *Sprite)
 {
-	uint32_t i, j;
 
-
-	int32_t X1_DstBounds = 0;
-	int32_t Y1_DstBounds = 0;
-	int32_t X2_DstBounds = Destination->SizeX - 1;
-	int32_t Y2_DstBounds = Destination->SizeY - 1;
 
 	int32_t X1_DstRegion = x;
 	int32_t Y1_DstRegion = y;
@@ -105,9 +99,9 @@ void eGFX_WEAK eGFX_BlitRestore(eGFX_ImagePlane *Destination,
 		Region->P2.Y = (Destination->SizeY - 1);
 
 
-	for (int x = Region->P1.X; x < Region->P2.X; x++)
+	for (int x = Region->P1.X; x <= Region->P2.X; x++)
 	{
-		for (int y = Region->P1.Y; y < Region->P2.Y; y++)
+		for (int y = Region->P1.Y; y <= Region->P2.Y; y++)
 		{
 			eGFX_PutPixel(Destination, x , y , eGFX_GetPixel(Source, x, y));
 		}

@@ -1,7 +1,9 @@
 #ifndef _EGFX_CONFIG_H_
 #define _EGFX_CONFIG_H_
 
-#define eGFX_INCLUDE_BITMAP_OUTPUT_SUPPORT  (0)
+#include "eGFX_DisplayDriver_SDL.h"
+#include "eGFX_InputDriver_SDL.h"
+
 
 
 /***
@@ -33,8 +35,6 @@
 #define eGFX_MAX_STRING_LEN                                       (64)
 
 
-#define eGFX_MAX_ANIMATORS                                                                                (32)
-#define eGFX_MAX_OBJECTS                                                                                  (64)
 
 
 /***
@@ -50,15 +50,6 @@
 #define eGFX_ACTIVITY_STACK_DEPTH                                                                 16
 #define eGFX_MAX_SYSTEM_ACTIVITIES                                                                16
 
-/***
- *      ___                   _   
- *     |_ _|_ __  _ __  _   _| |_ 
- *      | || '_ \| '_ \| | | | __|
- *      | || | | | |_) | |_| | |_ 
- *     |___|_| |_| .__/ \__,_|\__|
- *               |_|              
- */
-
 
 /***
  *      ____  __  __ ____     ___        _               _   
@@ -68,6 +59,8 @@
  *     |____/|_|  |_|_|      \___/ \__,_|\__| .__/ \__,_|\__|
  *                                          |_|              
  */
+
+#define eGFX_INCLUDE_BITMAP_OUTPUT_SUPPORT  (0)
 
 
 //Select only one of these!!

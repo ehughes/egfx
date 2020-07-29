@@ -9,10 +9,11 @@ extern "C" {
 #define eGFX_API_LEVEL                                                                                     1
 #define eGFX_REVISION                                                                                      2
 
-#include "eGFX_Config.h"
-
 #include <stdint.h>
 #include "Core/eGFX_DataTypes.h"
+
+#include "eGFX_Config.h"
+
 #include "Core/eGFX_Plane.h"
 
 
@@ -35,34 +36,6 @@ extern "C" {
 #include "Input/eGFX_Input.h"
 
 #include "UI/eGFX_Activity.h"
-
-#include "eGFX_Driver.h"
-
-
-#ifndef eGFX_DISPLAY_DRIVER_PRESENT
-
-    #include "Drivers/Display/eGFX_Driver_DisplayStub.h"
-	
-	#ifdef _MSC_VER
-		
-	#else
-		#warning "eGFX display driver not selected.  Using stub."
-	#endif
-
-#endif
-
-#ifndef eGFX_INPUT_DRIVER_PRESENT
-
-    #include "Drivers/Input/eGFX_InputDriverStub.h"
-
-	#ifdef _MSC_VER
-
-	#else
-				#warning "eGFX input driver not selected.  Using stub."
-	#endif
-
-#endif
-
 
 #endif
 

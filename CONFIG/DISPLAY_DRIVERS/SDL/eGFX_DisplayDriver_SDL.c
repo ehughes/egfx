@@ -1,9 +1,8 @@
-#include "../../eGFX.h"
-#include "eGFX_Driver_SDL.h"
-
-#ifdef eGFX_DRIVER_SDL
-
+#include "eGFX.h"
+#include "eGFX_DisplayDriver_SDL.h"
 #include "SDL_test_common.h"
+#include <stdio.h>
+#include <string.h>
 
 static SDLTest_CommonState *state;
 
@@ -97,7 +96,7 @@ int ProcessSDL_Events()
 	return done;
 }
 
-void eGFX_SDL_Quit()
+void eGFX_DeInitDriver()
 {
 	SDLTest_CommonQuit(state);
 }
@@ -154,8 +153,9 @@ uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][eGFX_CALCULATE_32BPP_IMAGE_STORAG
 
 char * Dummy[4] = { "eGFX Test : SDL Driver","","",(char *)0};
 
-
 SDL_Texture *sdlTexture;
+
+uint32_t TextureBuffer[eGFX_PHYSICAL_SCREEN_SIZE_X * eGFX_PHYSICAL_SCREEN_SIZE_Y];
 
 void eGFX_InitDriver()
 {
@@ -209,14 +209,11 @@ void eGFX_InitDriver()
 
 }
 
-uint32_t TextureBuffer[eGFX_PHYSICAL_SCREEN_SIZE_X*eGFX_PHYSICAL_SCREEN_SIZE_Y];
-
 
 void eGFX_WaitForV_Sync()
 {
     
 }
-
 
 void eGFX_Dump(eGFX_ImagePlane *Image)
 {
@@ -325,6 +322,3 @@ void eGFX_SetBacklight(uint8_t BacklightValue)
 }
 
 
-
-
-#endif

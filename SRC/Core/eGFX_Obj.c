@@ -113,6 +113,8 @@ uint32_t eGFX_ProcessObjects(void * ObjectList, eGFX_ObjectDrawCommand Cmd)
 uint32_t eGFX_InvalidateObject(void * Object)
 {
 	((eGFX_ObjectHeader *)(Object))->Invalidated = true;
+
+	return 0;
 }
 
 uint32_t eGFX_InvalidateObjectList(void * ObjectList)

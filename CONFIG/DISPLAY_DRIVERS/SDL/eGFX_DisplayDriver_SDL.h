@@ -1,16 +1,18 @@
-#include "../../eGFX.h"
+#include "Core/eGFX_DataTypes.h"
 
-#ifndef eGFX_DISPLAY_DRIVER_PRESENT
+#ifndef eGFX_DRIVER_SDL
+#define eGFX_DRIVER_SDL
 
-  #ifndef eGFX_DRIVER_STUB
-  #define eGFX_DRIVER_STUB
+#define eGFX_DISPLAY_DRIVER_PRESENT
+
+#define SDL_COLOR eGFX_IMAGE_PLANE_16BPP_RGB565
 
   /*
       Required symbols for any driver
   */
 
-  #define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 128)
-  #define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 64)
+  #define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 480)
+  #define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 480)
 
   /*
       eGFX_InitDriver() should do any hardware related init for the display and
@@ -18,6 +20,12 @@
   */
 
   extern void  eGFX_InitDriver();
+
+  /*
+     eGFX_DeInitDriver() is provided in case you want some way of shutting down the graphics
+  
+  */
+  void eGFX_DeInitDriver();
 
   /*
       eGFX_WaitForV_Sync() should block until the the last dump operation is complete.
@@ -37,8 +45,10 @@
       A driver should expose at least one back buffer that is the physical screen size and have
       a matching color space.
   */
+	
+ #define eGFX_NUM_BACKBUFFERS 2
 
-  extern eGFX_ImagePlane eGFX_BackBuffer;
+  extern eGFX_ImagePlane eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS];
 
   /*
    *  Integer value 0 (off) to 100 (full on)
@@ -47,6 +57,7 @@
 
   extern void eGFX_SetBacklight(uint8_t BacklightValue);
 
+
+
   #endif
 
-#endif

@@ -14,7 +14,7 @@ void eGFX_InitButton(eGFX_Button *B,
 
 
 // Computes the Debounce algorithm  Must be done periodically
-void eGFX_InputProcess();
+void eGFX_InputProcess(uint32_t mSecTicks);
 
 void eGFX_ClearAllInputActivity();
 
@@ -39,5 +39,16 @@ void eGFX_ProcessButton(eGFX_Button *B);
 void eGFX_ButtonProgrammaticDown(eGFX_Button *B);
 
 void eGFX_ButtonProgrammaticUp(eGFX_Button *B);
+
+void eGFX_ProcessEncoder(eGFX_Encoder *E);
+
+void eGFX_InitEncoder(eGFX_Encoder *E,
+					uint32_t PhaseA_GPIO_Port,
+					uint32_t PhaseA_GPIO_Bit,
+					uint32_t PhaseB_GPIO_Port,
+					uint32_t PhaseB_GPIO_Bit,
+					uint32_t Polarity,
+					char * Name
+					);
 
 #endif

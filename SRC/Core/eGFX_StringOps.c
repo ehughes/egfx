@@ -385,46 +385,6 @@ int32_t eGFX_WEAK eGFX_printf(eGFX_ImagePlane *Image,
 	const eGFX_Font *MyFont,
 	char *FormatString, ...)
 {
-<<<<<<< HEAD
-    int16_t End;
-    
-    #if (eGFX_STRING_BUF_ALLOC == 1)
-         char eGFX_StringBuf[eGFX_MAX_PRINTF_BUF_LENGTH];
-    #endif
-    
-         va_list argptr;
-         va_start(argptr,FormatString);
-
-         #ifdef WIN32
-     		vsnprintf_s((char *)eGFX_StringBuf, eGFX_MAX_PRINTF_BUF_LENGTH,eGFX_MAX_PRINTF_BUF_LENGTH, FormatString, argptr);
-         #else
-
-     	#ifdef __FREERTOS_PRESENT
-     			if(xSemaphoreTake(SNPRINTF_Mutex,1000) == pdFALSE)
-     			{
-     					eGFX_StringBuf[0] = 0;
-     			}
-     			else
-     			{
-     				vsnprintf((char *)eGFX_StringBuf,eGFX_MAX_PRINTF_BUF_LENGTH,FormatString,argptr);
-     				xSemaphoreGive(SNPRINTF_Mutex);
-     			}
-
-     	#else
-
-             vsnprintf((char *)eGFX_StringBuf,eGFX_MAX_PRINTF_BUF_LENGTH,FormatString,argptr);
-
-     	#endif
-
-        #endif
-
-         va_end(argptr);
-
-    End = StartX + eGFX_GetStringWidth(eGFX_StringBuf,MyFont) + 1;
-    eGFX_DrawString(Image, eGFX_StringBuf, StartX, StartY, MyFont);
-   
-   return End;
-=======
 	int16_t End;
 
 #if (eGFX_STRING_BUF_ALLOC == 1)
@@ -463,7 +423,6 @@ int32_t eGFX_WEAK eGFX_printf(eGFX_ImagePlane *Image,
 	eGFX_DrawString(Image, eGFX_StringBuf, StartX, StartY, MyFont);
 
 	return End;
->>>>>>> DirtyRectangles
 }
 
 int32_t eGFX_WEAK eGFX_printf_Colored(eGFX_ImagePlane *Image,
@@ -473,47 +432,6 @@ int32_t eGFX_WEAK eGFX_printf_Colored(eGFX_ImagePlane *Image,
 	uint32_t Color,
 	char *FormatString, ...)
 {
-<<<<<<< HEAD
-    int32_t End;
-    
-    #if (eGFX_STRING_BUF_ALLOC == 1)
-         char eGFX_StringBuf[eGFX_MAX_PRINTF_BUF_LENGTH];
-    #endif
-    
-         va_list argptr;
-         va_start(argptr,FormatString);
-
-         #ifdef WIN32
-     		vsnprintf_s((char *)eGFX_StringBuf, eGFX_MAX_PRINTF_BUF_LENGTH,eGFX_MAX_PRINTF_BUF_LENGTH, FormatString, argptr);
-         #else
-
-     	#ifdef __FREERTOS_PRESENT
-     			if(xSemaphoreTake(SNPRINTF_Mutex,1000) == pdFALSE)
-     			{
-     					eGFX_StringBuf[0] = 0;
-     			}
-     			else
-     			{
-     				vsnprintf((char *)eGFX_StringBuf,eGFX_MAX_PRINTF_BUF_LENGTH,FormatString,argptr);
-     				xSemaphoreGive(SNPRINTF_Mutex);
-     			}
-
-     	#else
-
-             vsnprintf((char *)eGFX_StringBuf,eGFX_MAX_PRINTF_BUF_LENGTH,FormatString,argptr);
-
-     	#endif
-
-         #endif
-
-         va_end(argptr);
-
-    End = StartX + eGFX_GetStringWidth(eGFX_StringBuf,MyFont) + 1;
-
-    eGFX_DrawStringColored(Image, eGFX_StringBuf, StartX, StartY, MyFont,Color);
-   
-   return End;
-=======
 	int32_t End;
 
 #if (eGFX_STRING_BUF_ALLOC == 1)
@@ -553,7 +471,6 @@ int32_t eGFX_WEAK eGFX_printf_Colored(eGFX_ImagePlane *Image,
 	eGFX_DrawStringColored(Image, eGFX_StringBuf, StartX, StartY, MyFont, Color);
 
 	return End;
->>>>>>> DirtyRectangles
 }
 
 int32_t eGFX_WEAK eGFX_printf_HorizontalCentered_Colored(eGFX_ImagePlane *Image,
@@ -562,51 +479,6 @@ int32_t eGFX_WEAK eGFX_printf_HorizontalCentered_Colored(eGFX_ImagePlane *Image,
 	uint32_t Color,
 	char *FormatString, ...)
 {
-<<<<<<< HEAD
-    int32_t End;
-    int32_t StartX = 0;
-    
-    #if (eGFX_STRING_BUF_ALLOC == 1)
-         char eGFX_StringBuf[eGFX_MAX_PRINTF_BUF_LENGTH];
-    #endif
-    
-    va_list argptr;
-    va_start(argptr,FormatString);
-
-    #ifdef WIN32
-		vsnprintf_s((char *)eGFX_StringBuf, eGFX_MAX_PRINTF_BUF_LENGTH,eGFX_MAX_PRINTF_BUF_LENGTH, FormatString, argptr);
-    #else
-
-	#ifdef __FREERTOS_PRESENT
-			if(xSemaphoreTake(SNPRINTF_Mutex,1000) == pdFALSE)
-			{
-					eGFX_StringBuf[0] = 0;
-			}
-			else
-			{
-				vsnprintf((char *)eGFX_StringBuf,eGFX_MAX_PRINTF_BUF_LENGTH,FormatString,argptr);
-				xSemaphoreGive(SNPRINTF_Mutex);
-			}
-
-	#else
-
-        vsnprintf((char *)eGFX_StringBuf,eGFX_MAX_PRINTF_BUF_LENGTH,FormatString,argptr);
-
-	#endif
-
-    #endif
-
-    va_end(argptr);
-
-
-
-    StartX = ((int16_t)Image->SizeX - eGFX_GetStringWidth(eGFX_StringBuf,MyFont))>>1;
-    End = StartX + eGFX_GetStringWidth(eGFX_StringBuf,MyFont) + 1;
-
-    eGFX_DrawStringColored(Image, eGFX_StringBuf, StartX, StartY, MyFont,Color);
-
-    return End;
-=======
 	int32_t End;
 	int32_t StartX = 0;
 
@@ -650,7 +522,6 @@ int32_t eGFX_WEAK eGFX_printf_HorizontalCentered_Colored(eGFX_ImagePlane *Image,
 	eGFX_DrawStringColored(Image, eGFX_StringBuf, StartX, StartY, MyFont, Color);
 
 	return End;
->>>>>>> DirtyRectangles
 }
 
 

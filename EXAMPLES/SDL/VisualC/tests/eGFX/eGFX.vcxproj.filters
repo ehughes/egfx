@@ -38,12 +38,6 @@
     <ClCompile Include="..\..\..\..\..\SRC\Core\Fonts\FONT_10_14_1BPP\FONT_10_14_1BPP.c">
       <Filter>eGFX\Core\Fonts</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\SRC\Drivers\Display\eGFX_Driver_SDL.c">
-      <Filter>eGFX\Drivers\Display</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\SRC\Drivers\Input\eGFX_InputDriverStub.c">
-      <Filter>eGFX\Drivers\Input</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\ASSETS\Sprites\Sprites_4BPP.c">
       <Filter>Assets\Sprites</Filter>
     </ClCompile>
@@ -71,6 +65,12 @@
     <ClCompile Include="..\..\..\..\ACTIVITIES\Activity__SpriteTest.c">
       <Filter>Activities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\CONFIG\DISPLAY_DRIVERS\SDL\eGFX_DisplayDriver_SDL.c">
+      <Filter>eGFX_Config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\CONFIG\INPUT_DRIVERS\SDL\eGFX_InputDriver_SDL.c">
+      <Filter>eGFX_Config</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="eGFX">
@@ -78,9 +78,6 @@
     </Filter>
     <Filter Include="eGFX\Core">
       <UniqueIdentifier>{1f41ab31-92f9-4aab-bd67-2c0b361c19f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="eGFX\Drivers">
-      <UniqueIdentifier>{0afcc53f-37f3-442e-ab7d-fbf6814fb392}</UniqueIdentifier>
     </Filter>
     <Filter Include="eGFX\Input">
       <UniqueIdentifier>{d2af6e37-6212-407a-a768-d4fc27970152}</UniqueIdentifier>
@@ -94,12 +91,6 @@
     <Filter Include="eGFX\Core\Fonts">
       <UniqueIdentifier>{5c4ce144-c77b-40d3-adc5-aaa7b42317fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="eGFX\Drivers\Display">
-      <UniqueIdentifier>{b4897caa-9689-4c45-b9d2-3787ed25d04a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="eGFX\Drivers\Input">
-      <UniqueIdentifier>{8d37a780-1309-4c30-9b0d-c63130fbad49}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Assets">
       <UniqueIdentifier>{fd6afd81-3df9-4b89-96f7-1fd937c86648}</UniqueIdentifier>
     </Filter>
@@ -112,15 +103,12 @@
     <Filter Include="Activities">
       <UniqueIdentifier>{36b96506-3d91-4cfe-ace1-e51b1e688d7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="eGFX_Config">
+      <UniqueIdentifier>{872524a8-3e44-42d8-b0a0-9c9ab6f043bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\SRC\eGFX.h">
-      <Filter>eGFX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\SRC\eGFX_Config.h">
-      <Filter>eGFX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\SRC\eGFX_Driver.h">
       <Filter>eGFX</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\SRC\Core\eGFX_Animator.h">
@@ -165,12 +153,6 @@
     <ClInclude Include="..\..\..\..\..\SRC\Core\Fonts\FONT_10_14_1BPP\FONT_10_14_1BPP.h">
       <Filter>eGFX\Core\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\SRC\Drivers\Display\eGFX_Driver_SDL.h">
-      <Filter>eGFX\Drivers\Display</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\SRC\Drivers\Input\eGFX_InputDriverStub.h">
-      <Filter>eGFX\Drivers\Input</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\ASSETS\Sprites\Sprites_4BPP.h">
       <Filter>Assets\Sprites</Filter>
     </ClInclude>
@@ -197,6 +179,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\ACTIVITIES\Activity__SpriteTest.h">
       <Filter>Activities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\CONFIG\DISPLAY_DRIVERS\SDL\eGFX_DisplayDriver_SDL.h">
+      <Filter>eGFX_Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\CONFIG\INPUT_DRIVERS\SDL\eGFX_InputDriver_SDL.h">
+      <Filter>eGFX_Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\CONFIG\eGFX_Config.h">
+      <Filter>eGFX_Config</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

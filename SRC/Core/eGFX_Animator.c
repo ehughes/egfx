@@ -133,7 +133,7 @@ uint32_t eGFX_ProcessAnimators(eGFX_AnimatorHeader * AnimatorList)
 	//Process the list
 	while (AnimatorList != NULL)
 	{
-		if (((eGFX_AnimatorHeader *)(AnimatorList))->State == eGFX_OBJECT_STATE_ACTIVE)
+		if ((eGFX_ObjectState)((eGFX_AnimatorHeader *)(AnimatorList))->State == (eGFX_ObjectState)eGFX_OBJECT_STATE_ACTIVE)
 		{
 
 			switch (((eGFX_AnimatorHeader *)(AnimatorList))->Type)
@@ -215,7 +215,7 @@ void eGFX_Init_PointAnimator(eGFX_Point_Animator *A,
 			A->FractionToMove = FractionToMove;
 		}
 
-		eGFX_InvalidateAnimatorObject(A);
+		eGFX_InvalidateAnimatorObject((eGFX_AnimatorHeader *)A);
 	}
 }
 
@@ -262,7 +262,7 @@ void eGFX_Init_ScalarAnimator(eGFX_Scalar_Animator *A,
 			A->FractionToMove = FractionToMove;
 		}
 
-		eGFX_InvalidateAnimatorObject(A);
+		eGFX_InvalidateAnimatorObject((eGFX_AnimatorHeader*)A);
 	}
 }
 

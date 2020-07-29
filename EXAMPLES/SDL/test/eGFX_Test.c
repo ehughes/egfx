@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 		
         }
 
-	eGFX_SDL_Quit();
+	eGFX_DeInitDriver();
 
     
     return 0;

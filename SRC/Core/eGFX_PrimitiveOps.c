@@ -11,7 +11,7 @@ void eGFX_WEAK eGFX_DrawH_Line(eGFX_ImagePlane *Image,
 {
     int32_t LineStart;
     int32_t LineStop;
-    uint32_t i;
+    int i;
 
     if((Y<Image->SizeY)  && (Y>=0))
     {
@@ -94,7 +94,7 @@ void eGFX_WEAK eGFX_DrawFilledBox(eGFX_ImagePlane *Image,
                                   eGFX_Box *Box,
                                   eGFX_PixelState PS)
 {
-    uint32_t i;
+    int32_t i;
 
     for(i=Box->P1.Y ; i<Box->P2.Y+1 ; i++)
     {

@@ -43,4 +43,24 @@ typedef struct
 } eGFX_Button;
 
 
+typedef struct
+{
+    volatile int32_t Count;
+
+    uint8_t PhaseA_GPIO_Port;
+    uint8_t PhaseA_GPIO_Bit;
+
+    uint8_t PhaseB_GPIO_Port;
+    uint8_t PhaseB_GPIO_Bit;
+
+    char *Name;
+
+    uint32_t State;
+
+    uint8_t   Polarity; //is the IO active high (>0) or active low (0)
+
+} eGFX_Encoder;
+
+
+
 #endif

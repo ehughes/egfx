@@ -1,11 +1,5 @@
-#include "../eGFX.h"
+#include "eGFX.h"
 #include "string.h"
-
-#ifndef eGFX_INPUT_DRIVER_PRESENT
-
-    #include "../Drivers/Input/eGFX_InputDriverStub.h"
-
-#endif
 
 #define BUTTON_STATE_WAIT_FOR_PRESS                             0
 #define BUTTON_STATE_WAIT_FOR_WAIT_FOR_PRESS_STABLE             1
@@ -14,23 +8,6 @@
 #define BUTTON_STATE_WAIT_FOR_STABLE_GENERATE_NO_CODES          4
 
 
-
-void eGFX_InputProcess()
-{
-        for(int i=0;i<eGFX_NUM_BUTTONS;i++)
-        {
-                eGFX_ProcessButton(&MyButtons[i]);
-        }
-}
-
-void eGFX_ClearAllInputActivity()
-{
-        for(int i=0;i<eGFX_NUM_BUTTONS;i++)
-        {
-                eGFX_Button_ResetState(&MyButtons[i]);
-        }
-
-}
 
 void eGFX_InitButton(eGFX_Button *B,
                 uint8_t Port,
@@ -55,7 +32,6 @@ void eGFX_InitButton(eGFX_Button *B,
 
         if(ButtonID == (char *)NULL)
             strcpy(ButtonID,"Unknown");
-
         else
             B->ButtonID = ButtonID;
     }
@@ -296,5 +272,77 @@ void eGFX_Button_ResetState (eGFX_Button *B)
         B->Down = 0;
         B->HoldTime = 0;
 }
+
+
+const  int32_t EncoderTable[16] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};
+
+void eGFX_InitEncoder(eGFX_Encoder *E,
+					uint32_t PhaseA_GPIO_Port,
+					uint32_t PhaseA_GPIO_Bit,
+					uint32_t PhaseB_GPIO_Port,
+					uint32_t PhaseB_GPIO_Bit,
+					uint32_t Polarity,
+					char * Name
+					)
+{
+	if(E!=NULL)
+	{
+		E->PhaseA_GPIO_Port = PhaseA_GPIO_Port;
+		E->PhaseA_GPIO_Bit = PhaseA_GPIO_Bit;
+		E->PhaseB_GPIO_Port = PhaseB_GPIO_Port;
+		E->PhaseB_GPIO_Bit = PhaseB_GPIO_Bit;
+		E->Polarity = Polarity;
+
+		if(Name != NULL)
+		{
+			E->Name = Name;
+		}
+		else
+		{
+			E->Name = "Unknown";
+		}
+
+		E->State = 0;
+	}
+}
+
+void eGFX_ProcessEncoder(eGFX_Encoder *E)
+{
+	if(E != NULL)
+	{
+
+		E->State = E->State<<2;
+
+
+		if(E->Polarity == eGFX_BUTTON_POLARITY_HIGH_ACTIVE)
+		{
+			if(eGFX_InputHAL_ReadPortPin(E->PhaseA_GPIO_Port,E->PhaseA_GPIO_Bit))
+					E->State |= 0x2;
+
+				if(eGFX_InputHAL_ReadPortPin(E->PhaseB_GPIO_Port,E->PhaseB_GPIO_Bit))
+					E->State |= 0x1;
+		}
+		else
+		{
+			if(eGFX_InputHAL_ReadPortPin(E->PhaseA_GPIO_Port,E->PhaseA_GPIO_Bit) == 0)
+			{
+					E->State |= 0x2;
+			}
+
+			if(eGFX_InputHAL_ReadPortPin(E->PhaseB_GPIO_Port,E->PhaseB_GPIO_Bit) == 0)
+			{
+				E->State |= 0x1;
+			}
+		}
+
+
+		E->State &= 0xF;
+
+
+		E->Count +=	EncoderTable[E->State & 0xF];
+	}
+
+}
+
 
 
