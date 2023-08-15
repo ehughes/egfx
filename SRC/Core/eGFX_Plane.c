@@ -31,7 +31,7 @@ uint8_t eGFX_WEAK eGFX_ImagePlane_GetByte(eGFX_ImagePlane   *Image,
 
     switch(Image->Type)
     {
-        case  eGFX_IMAGE_PLANE_4BPP_XBGR:
+        case eGFX_IMAGE_PLANE_4BPP_XBGR:
         case eGFX_IMAGE_PLANE_4BPP:
 
                   if(X > Image->SizeX)   //Make sure we aren't asking for a chunk greater than the width of one row
@@ -177,7 +177,8 @@ void eGFX_WEAK eGFX_ImagePlane_Clear(eGFX_ImagePlane   *Image)
             break;
         
         case  eGFX_IMAGE_PLANE_32BPP:
-         
+        case  eGFX_IMAGE_PLANE_32BPP_XRGB888:
+
             PlaneSpaceSize = eGFX_CALCULATE_32BPP_IMAGE_STORAGE_SPACE_SIZE(Image->SizeX,Image->SizeY);
 
             for(i=0; i<PlaneSpaceSize; i++)

@@ -6,20 +6,6 @@ extern "C" {
 #define eGFX_PLANE_H
      
      
-#define eGFX_CALCULATE_1BPP_BUFFER_ROW_BYTE_SIZE(x)		     ((x+7)>>3) //We add 8 to round up to the next even byte boundary
-#define eGFX_CALCULATE_4BPP_BUFFER_ROW_BYTE_SIZE(x)		     ((x+1)>>1) //We add 1 to round up to the next even byte boundary
-#define eGFX_CALCULATE_8BPP_BUFFER_ROW_BYTE_SIZE(x)		     (x)
-#define eGFX_CALCULATE_16BPP_BUFFER_ROW_BYTE_SIZE(x)		 (x*2)
-#define eGFX_CALCULATE_24BPP_BUFFER_ROW_BYTE_SIZE(x)	 	 (x*3)
-#define	eGFX_CALCULATE_32BPP_BUFFER_ROW_BYTE_SIZE(x)	 	 (x*4)
-
-#define eGFX_CALCULATE_1BPP_IMAGE_STORAGE_SPACE_SIZE(x,y)    (eGFX_CALCULATE_1BPP_BUFFER_ROW_BYTE_SIZE(x)	* y)
-#define eGFX_CALCULATE_3BPP_IMAGE_STORAGE_SPACE_SIZE(x,y)    (((x * y * 3))/8) //This is a special type  for sharp 8 color memory LCDs.   Packing is done in the data buffer so the dump to the screen is simple
-#define eGFX_CALCULATE_4BPP_IMAGE_STORAGE_SPACE_SIZE(x,y)    (eGFX_CALCULATE_4BPP_BUFFER_ROW_BYTE_SIZE(x)	* y)
-#define eGFX_CALCULATE_8BPP_IMAGE_STORAGE_SPACE_SIZE(x,y)    (eGFX_CALCULATE_8BPP_BUFFER_ROW_BYTE_SIZE(x)	* y)
-#define eGFX_CALCULATE_16BPP_IMAGE_STORAGE_SPACE_SIZE(x,y)   (eGFX_CALCULATE_16BPP_BUFFER_ROW_BYTE_SIZE(x)	* y)
-#define eGFX_CALCULATE_24BPP_IMAGE_STORAGE_SPACE_SIZE(x,y)   (eGFX_CALCULATE_24BPP_BUFFER_ROW_BYTE_SIZE(x)	* y)
-#define eGFX_CALCULATE_32BPP_IMAGE_STORAGE_SPACE_SIZE(x,y)   (eGFX_CALCULATE_32BPP_BUFFER_ROW_BYTE_SIZE(x)	* y)
 
      
      

@@ -1,3 +1,6 @@
+#include "eGFX_Config.h"
+#include "eGFX_DataTypes.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -5,7 +8,7 @@ extern "C" {
 #ifndef eGFX_PRIMITIVE_OPS_H
 #define eGFX_PRIMITIVE_OPS_H
 
-void eGFX_WEAK eGFX_DrawH_Line(eGFX_ImagePlane *Image,
+void  eGFX_DrawH_Line(eGFX_ImagePlane *Image,
                                int32_t X_Start,
                                int32_t X_Stop,
                                int32_t Y,

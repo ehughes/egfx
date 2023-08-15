@@ -11,7 +11,6 @@ void eGFX_WEAK eGFX_Blit(eGFX_ImagePlane *Destination,
 	const eGFX_ImagePlane *Sprite)
 {
 
-
 	int32_t X1_DstRegion = x;
 	int32_t Y1_DstRegion = y;
 	int32_t X2_DstRegion = x + Sprite->SizeX - 1;
@@ -64,11 +63,15 @@ void eGFX_WEAK eGFX_Blit(eGFX_ImagePlane *Destination,
 	
 	}
 
+    eGFX_PutPixel_t* PP = eGFX_GetPutPixelFunc(Destination);
+        eGFX_GetPixel_t * GP = eGFX_GetGetPixelFunc(Sprite);
+
+
 	for (int y0 = SrcStartY; y0 <= SrcStopY; y0++)
 	{
-		for (int x0= SrcStartX; x0 <= SrcStopX; x0++)
+	        for (int x0= SrcStartX; x0 <= SrcStopX; x0++)
 		{
-			eGFX_PutPixel(Destination, x + x0, y + y0, eGFX_GetPixel(Sprite, x0, y0));
+		        PP(Destination, x + x0, y + y0, GP(Sprite, x0, y0));
 		}
 	}
 }
@@ -210,8 +213,8 @@ void eGFX_WEAK eGFX_BlitColored(eGFX_ImagePlane *Destination,
         {
                 for (i = 0; i<Sprite->SizeX; i++)
                 {
-					if(eGFX_GetPixel(Sprite, i, j))
-						eGFX_PutPixel(Destination, x + i, y + j,Color);
+		        if(eGFX_GetPixel(Sprite, i, j))
+				eGFX_PutPixel(Destination, x + i, y + j,Color);
                 }
 
         }
