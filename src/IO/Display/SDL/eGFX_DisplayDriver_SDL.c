@@ -99,7 +99,7 @@ int ProcessSDL_Events()
 
 					case SDL_WINDOWEVENT_RESIZED:
 					{
-						SDL_Window *window = SDL_GetWindowFromID(event.window.windowID);
+		
 							int w, h;
 
 							SDL_GetWindowSize(eGFX_Window, &w, &h);
@@ -205,6 +205,8 @@ eGFX_VSyncCallback_t *VSyncCallback;
 void eGFX_InitDriver(eGFX_VSyncCallback_t VS)
 {
 	VSyncCallback = VS;
+
+	
 
 	for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++)
 	{

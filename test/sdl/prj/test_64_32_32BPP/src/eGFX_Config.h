@@ -16,7 +16,7 @@
 #ifdef _MSC_VER 
 	#define eGFX_WEAK                                                
 #else
-	#define eGFX_WEAK                                                __attribute__((weak))
+	#define eGFX_WEAK                                          //__attribute__((weak))   Rethink this approach.  Some builds break when eGFX is built as library
 #endif
 
 #define eGFX_PUT_PIXEL_FLIP_X                                     (0)                                     

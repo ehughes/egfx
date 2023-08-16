@@ -13,8 +13,11 @@
 
 int main(int argc, char *argv[])
 {
+	
+
 	eGFX_InitDriver(NULL);
 
+	
   	while (!ProcessSDL_Events()) 
   	{
 		SDL_Delay(24);

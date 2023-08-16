@@ -22,10 +22,13 @@ set(eGFX_SRC
                         )
                         
 
-add_library(eGFX STATIC ${eGFX_SRC})
+#add_library(eGFX STATIC ${eGFX_SRC})
 
+#target_compile_options(eGFX PUBLIC -Og -g3 -fdiagnostics-color=always -Wall)
 
-target_include_directories(eGFX PUBLIC 
+target_sources(${TARGET} PRIVATE ${eGFX_SRC})
+
+target_include_directories(${TARGET} PUBLIC 
                           ${CMAKE_CURRENT_LIST_DIR}
                           ${CMAKE_CURRENT_LIST_DIR}/Core 
                           ${CMAKE_CURRENT_LIST_DIR}/Core/fonts

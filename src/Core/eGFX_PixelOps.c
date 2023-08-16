@@ -367,9 +367,7 @@ eGFX_PixelState eGFX_WEAK eGFX_GetPixel_3BPP(const eGFX_ImagePlane *Image,
                                   uint16_t y
 )
 {
-    uint32_t Offset = 0;
-   
-    eGFX_PixelState PS;
+    eGFX_PixelState PS = 0;
     
     uint32_t BitStreamPosition = x*3 + y*Image->SizeX*3;
 

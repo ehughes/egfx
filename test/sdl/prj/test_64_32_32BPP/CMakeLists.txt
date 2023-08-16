@@ -5,18 +5,26 @@ project(egfx_sdl_test_64_32_32BPP)
 if(DEFINED SDL2_DIR)
     message(STATUS "SDL2 location is ${SDL2_DIR}")
 else()
-    set(SDL2_DIR "${CMAKE_CURRENT_LIST_DIR}/../../sdl2/cmake")
-    message(WARNING "SDL2 location not set.  using ${SDL2_DIR}")
+    
+    if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+        message(STATUS "Configuring SDL for Windows")
+        set(SDL2_DIR  "${CMAKE_CURRENT_LIST_DIR}/../sdl2/cmake")
+    else()
+        message(STATUS "Configuring SDL for Linux builds")
+    endif()
+
 endif()
+
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+message(STATUS "SDL: Using ${SDL2_DIR}")
 
 if(DEFINED EGFX_LOC)
     message(STATUS "eGFX location is ${EGFX_LOC}")
 else()
-    set(EGFX_LOC      "${CMAKE_CURRENT_LIST_DIR}/../../../../src")
+    set(EGFX_LOC   "${CMAKE_CURRENT_LIST_DIR}/../../../../src")
     message(STATUS "Uisng default eGFX location : ${EGFX_LOC}")
 endif()
-
-find_package(SDL2 REQUIRED)
 
 if(DEFINED TARGET)
      message(STATUS "Target name is ${TARGET}")
@@ -24,6 +32,7 @@ else()
      set(TARGET       ${PROJECT_NAME})
      message(STATUS "Using default target name from project : ${TARGET}")
 endif()
+
 
 #options for the SDL Driver
 set(SDL_SIM_IMAGE_PLANE_TYPE "eGFX_IMAGE_PLANE_32BPP_XRGB888")
@@ -55,6 +64,9 @@ add_executable(${TARGET}  ${TEST_SRC})
 
 target_compile_definitions(${TARGET} PUBLIC  SIMULATOR=1 )
 
+target_compile_options(${TARGET} PUBLIC -Og -g3 -fdiagnostics-color=always -Wall)
+
+
 set(EGFX_CONFIG_LOC "${CMAKE_CURRENT_LIST_DIR}/src")
 
 set(ASSET_LOC "${CMAKE_CURRENT_LIST_DIR}/assets")
@@ -66,17 +78,29 @@ target_include_directories(${TARGET} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/src"
                                                                     
 add_subdirectory(${EGFX_LOC} egfx)
 
-execute_process(COMMAND "${TOOLS_LOC}/eGFX_Tools.exe" "GenerateSprites" "${ASSET_LOC}" "eGFX_IMAGE_PLANE_32BPP_XRGB888" "${TEST_SRC_FOLDER}"
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+
+    execute_process(COMMAND "mono" "${TOOLS_LOC}/eGFX_Tools.exe" "GenerateSprites" "${ASSET_LOC}" "eGFX_IMAGE_PLANE_32BPP_XRGB888" "${TEST_SRC_FOLDER}"
                 RESULT_VARIABLE ASSET_GEN_OUTPUT 
                 )
+else()
+
+    message(STATUS "Using mono for running the tools on Linux, etc.")
+
+    execute_process(COMMAND "mono" "${TOOLS_LOC}/eGFX_Tools.exe" "GenerateSprites" "${ASSET_LOC}" "eGFX_IMAGE_PLANE_32BPP_XRGB888" "${TEST_SRC_FOLDER}"
+                RESULT_VARIABLE ASSET_GEN_OUTPUT 
+                )
+endif()
 
 message("${ASSET_GEN_OUTPUT}")
 
-target_link_libraries(${TARGET} ${SDL2_LIBRARIES} eGFX)
+target_link_libraries(${TARGET} ${SDL2_LIBRARIES})
 
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 
-#needed for visual studio outputs.  Need to make sure the SDL dll's exist next to the binary
-add_custom_command(TARGET ${TARGET} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${SDL2_DIR}/../lib/x64"
-        $<TARGET_FILE_DIR:${TARGET}>)
+    #needed for visual studio outputs.  Need to make sure the SDL dll's exist next to the binary
+    add_custom_command(TARGET ${TARGET} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${SDL2_DIR}/../lib/x64"
+            $<TARGET_FILE_DIR:${TARGET}>)
+endif()

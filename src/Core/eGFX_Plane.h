@@ -22,6 +22,7 @@ void eGFX_WEAK eGFX_ImagePlaneInit(eGFX_ImagePlane* Image,
                                     int16_t SizeY,
                                     uint32_t Type);
 
+
 void eGFX_WEAK eGFX_ImagePlane_Clear(eGFX_ImagePlane   *Image);
 
                                    
