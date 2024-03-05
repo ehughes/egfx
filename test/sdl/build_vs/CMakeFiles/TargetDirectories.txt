@@ -1,0 +1,5 @@
+C:/ELI/egfx/test/sdl/build_vs/CMakeFiles/ALL_BUILD.dir
+C:/ELI/egfx/test/sdl/build_vs/CMakeFiles/ZERO_CHECK.dir
+C:/ELI/egfx/test/sdl/build_vs/test_64_32_32BPP/CMakeFiles/test_64_32_32BPP.dir
+C:/ELI/egfx/test/sdl/build_vs/test_64_32_32BPP/CMakeFiles/ALL_BUILD.dir
+C:/ELI/egfx/test/sdl/build_vs/test_64_32_32BPP/egfx/CMakeFiles/eGFX.dir

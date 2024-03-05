@@ -1,0 +1,6 @@
+# CMake generation dependency list for this directory.
+C:/ELI/egfx/src/IO/Display/SDL/eGFX_DisplayDriver_SDL.h.in
+C:/ELI/egfx/test/sdl/prj/test_64_32_32BPP/CMakeLists.txt
+C:/ELI/egfx/test/sdl/sdl2/cmake/sdl2-config-version.cmake
+C:/ELI/egfx/test/sdl/sdl2/cmake/sdl2-config.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/FeatureSummary.cmake

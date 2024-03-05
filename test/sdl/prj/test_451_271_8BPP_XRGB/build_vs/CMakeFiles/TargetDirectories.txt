@@ -1,0 +1,4 @@
+C:/ELI/egfx/test/sdl/prj/test_451_271_8BPP_XRGB/build_vs/CMakeFiles/egfx_sdl_test_451_272_8BPP_XRGB222.dir
+C:/ELI/egfx/test/sdl/prj/test_451_271_8BPP_XRGB/build_vs/CMakeFiles/ALL_BUILD.dir
+C:/ELI/egfx/test/sdl/prj/test_451_271_8BPP_XRGB/build_vs/CMakeFiles/ZERO_CHECK.dir
+C:/ELI/egfx/test/sdl/prj/test_451_271_8BPP_XRGB/build_vs/egfx/CMakeFiles/eGFX.dir

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\ELI\egfx\test\sdl\prj\test_451_271_8BPP_XRGB\src\eGFX_Test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ELI\egfx\test\sdl\prj\test_451_271_8BPP_XRGB\src\Sprites_8BPP_XRGB222.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ELI\egfx\src\IO\Display\SDL\eGFX_DisplayDriver_SDL.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\ELI\egfx\test\sdl\prj\test_451_271_8BPP_XRGB\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{037F30F5-D31B-3DCA-BF83-98D2F3555CCE}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

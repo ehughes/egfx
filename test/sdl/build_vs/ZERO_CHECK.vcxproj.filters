@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\ELI\egfx\test\sdl\build_vs\CMakeFiles\bb7b3175cbf54215f5564e068a1db344\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\ELI\egfx\test\sdl\prj\test_64_32_32BPP\CMakeLists.txt">
+      <Filter>Buildsystem Input Files\prj\test_64_32_32BPP</Filter>
+    </None>
+    <None Include="C:\ELI\egfx\test\sdl\sdl2\cmake\sdl2-config-version.cmake">
+      <Filter>Buildsystem Input Files\sdl2\cmake</Filter>
+    </None>
+    <None Include="C:\ELI\egfx\test\sdl\sdl2\cmake\sdl2-config.cmake">
+      <Filter>Buildsystem Input Files\sdl2\cmake</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{813FA9BE-14D7-322E-83D0-3BE70300CA96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\prj\test_64_32_32BPP">
+      <UniqueIdentifier>{3F1D56E9-ABDC-35AF-9B71-0D253B291BD6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\sdl2\cmake">
+      <UniqueIdentifier>{55498F3D-C4CA-34B1-B18E-86FE0C290D48}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,29 @@
+# CMake generation dependency list for this directory.
+C:/ELI/egfx/src/IO/Display/SDL/eGFX_DisplayDriver_SDL.h.in
+C:/ELI/egfx/test/sdl/prj/test_451_271_8BPP_XRGB/CMakeLists.txt
+C:/ELI/egfx/test/sdl/prj/test_451_271_8BPP_XRGB/build_vs/CMakeFiles/3.27.1/CMakeCCompiler.cmake
+C:/ELI/egfx/test/sdl/prj/test_451_271_8BPP_XRGB/build_vs/CMakeFiles/3.27.1/CMakeCXXCompiler.cmake
+C:/ELI/egfx/test/sdl/prj/test_451_271_8BPP_XRGB/build_vs/CMakeFiles/3.27.1/CMakeRCCompiler.cmake
+C:/ELI/egfx/test/sdl/prj/test_451_271_8BPP_XRGB/build_vs/CMakeFiles/3.27.1/CMakeSystem.cmake
+C:/ELI/egfx/test/sdl/sdl2/cmake/sdl2-config-version.cmake
+C:/ELI/egfx/test/sdl/sdl2/cmake/sdl2-config.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/CMakeCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/CMakeCXXInformation.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/CMakeGenericSystem.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/CMakeInitializeConfigs.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/CMakeLanguageInformation.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/CMakeRCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/CMakeSystemSpecificInformation.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/CMakeSystemSpecificInitialize.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Compiler/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Compiler/MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Compiler/MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/FeatureSummary.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Platform/Windows-Initialize.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Platform/Windows-MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Platform/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Platform/Windows.cmake
+C:/Program Files/CMake/share/cmake-3.27/Modules/Platform/WindowsPaths.cmake
