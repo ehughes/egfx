@@ -43,8 +43,8 @@ int ProcessSDL_Events();
 
 #define eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE   eGFX_IMAGE_PLANE_8BPP_XRGB222
 
-#define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 451)
-#define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 272)
+#define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 272)
+#define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 451)
 
   /*
       eGFX_InitDriver() should do any hardware related init for the display and

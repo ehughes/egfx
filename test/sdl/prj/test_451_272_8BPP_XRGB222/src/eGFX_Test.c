@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
 
 		eGFX_Blit(&eGFX_BackBuffer[0],0,0,&Sprite_8BPP_XRGB222_neos_icon);
-		
+		eGFX_DrawLine(&eGFX_BackBuffer[0], 0, 0, 100, 100, 3);
 		eGFX_Dump(&eGFX_BackBuffer[0]);			
     }
 

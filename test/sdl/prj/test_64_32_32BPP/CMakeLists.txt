@@ -2,15 +2,20 @@ cmake_minimum_required(VERSION 3.10)
 
 project(egfx_sdl_test_64_32_32BPP)
 
+message(STATUS "Cmake System name is ${CMAKE_SYSTEM_NAME}")
+
+
 if(DEFINED SDL2_DIR)
-    message(STATUS "SDL2 location is ${SDL2_DIR}")
+    message(STATUS "SDL2 was already defined as ${SDL2_DIR}")
 else()
     
     if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
         message(STATUS "Configuring SDL for Windows")
-        set(SDL2_DIR  "${CMAKE_CURRENT_LIST_DIR}/../sdl2/cmake")
+        set(SDL2_DIR  "${CMAKE_CURRENT_LIST_DIR}/../../sdl2/cmake")
+	message(STATUS "SDL2 location is ${SDL2_DIR}")
+
     else()
-        message(STATUS "Configuring SDL for Linux builds")
+        message(STATUS "Configuring SDL for Linux")
     endif()
 
 endif()
@@ -39,7 +44,7 @@ set(SDL_SIM_IMAGE_PLANE_TYPE "eGFX_IMAGE_PLANE_32BPP_XRGB888")
 
 set(SDL_INITIAL_ZOOM           1)
 
-#if enabled, the driver will draw larger pixels with some space inbetween
+#if enabled, the driver will draw larger pixels with some space in between
 #to simulate chunk LED screens and LCD screens
 set(SDL_SIM_GRID_ENABLE        1)
 set(SDL_SIM_GRID_PIXEL_BORDER  1)
@@ -64,8 +69,7 @@ add_executable(${TARGET}  ${TEST_SRC})
 
 target_compile_definitions(${TARGET} PUBLIC  SIMULATOR=1 )
 
-target_compile_options(${TARGET} PUBLIC -Og -g3 -fdiagnostics-color=always -Wall)
-
+#target_compile_options(${TARGET} PUBLIC)
 
 set(EGFX_CONFIG_LOC "${CMAKE_CURRENT_LIST_DIR}/src")
 
@@ -79,8 +83,7 @@ target_include_directories(${TARGET} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/src"
 add_subdirectory(${EGFX_LOC} egfx)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-
-    execute_process(COMMAND "mono" "${TOOLS_LOC}/eGFX_Tools.exe" "GenerateSprites" "${ASSET_LOC}" "eGFX_IMAGE_PLANE_32BPP_XRGB888" "${TEST_SRC_FOLDER}"
+    execute_process(COMMAND "${TOOLS_LOC}/eGFX_Tools.exe" "GenerateSprites" "${ASSET_LOC}" "eGFX_IMAGE_PLANE_32BPP_XRGB888" "${TEST_SRC_FOLDER}"
                 RESULT_VARIABLE ASSET_GEN_OUTPUT 
                 )
 else()
