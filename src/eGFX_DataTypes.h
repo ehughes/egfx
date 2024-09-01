@@ -313,7 +313,7 @@ typedef struct
 
 typedef enum
 {
-	eGFX_ANIMATOR_POINT = 0x8000,
+	eGFX_ANIMATOR_POINT  = 0x8000,
 	eGFX_ANIMATOR_SCALAR = 0x8001,
 }eGFX_AnimatorType;
 
@@ -325,12 +325,20 @@ typedef enum
 }eGFX_AnimatorState;
 
 
+typedef void(*eGFX_AnimatorInvalidator_t)(void *);
+typedef void(*eGFX_AnimatorCompleteNotifier_t)(void *);
+
+
 typedef struct
 {
 	eGFX_AnimatorType	 Type;
 	eGFX_AnimatorState   State;
-	void *Next;			 //Singley Linked list
-	eGFX_ObjectHeader    *ObjectToInvalidate;
+	void *Next;			
+	
+	void *ObjectToInvalidate;
+	eGFX_AnimatorInvalidator_t Invalidator;		//Called when animation is updated.  Will pass the ObjectToInvalidate as void *
+	void *ObjectToNotify;
+	eGFX_AnimatorCompleteNotifier_t Complete;   //Called when animation is complete.  Will pass the ObjectToNotify as void *
 
 }eGFX_AnimatorHeader;
 

@@ -317,7 +317,7 @@ void eGFX_Dump(eGFX_ImagePlane *Image)
 
 				PS &= 0xF;
 
-				TexturePixelColor = eGFX_COLOR_RGB_TO_RGBX888(PS, PS * 12, PS >> 1);
+				TexturePixelColor = eGFX_COLOR_RGB_TO_RGBX888(PS << 4, PS<<4 , PS << 4);
 
 				break;
 
@@ -328,7 +328,7 @@ void eGFX_Dump(eGFX_ImagePlane *Image)
 
 				PS &= 0xFF;
 
-				TexturePixelColor = eGFX_COLOR_RGB_TO_RGBX888(PS, PS * 12, PS >> 1);
+				TexturePixelColor = eGFX_COLOR_RGB_TO_RGBX888(PS, PS ,PS);
 
 				break;
 

@@ -397,8 +397,8 @@ eGFX_PixelState eGFX_WEAK eGFX_GetPixel_4BPP(const eGFX_ImagePlane *Image,
 
     Offset = (y * (MemWidthInBytes)) + (x>>1);
 
-    if(x&0x01)
-        PS = Image->Data[Offset] & 0x0F;
+    if ((x & 0x01))
+        PS =  Image->Data[Offset] & 0x0F;
     else
         PS = ((Image->Data[Offset])>>4) & 0x0F;
 

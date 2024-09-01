@@ -4,7 +4,7 @@ project(egfx_test_projects)
 
 set(EGFX_LOC      "${CMAKE_CURRENT_LIST_DIR}/../../src")
 
-set(TARGETS test_64_32_32BPP test_451_272_8BPP_XRGB222 test_256_64_1BPP)
+set(TARGETS test_64_32_32BPP test_451_272_8BPP_XRGB222 test_256_64_4BPP)
 
 
 if(DEFINED SDL2_DIR)

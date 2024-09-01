@@ -18,14 +18,16 @@ extern "C" {
 #include "Core/eGFX_StringOps.h"
 #include "Core/eGFX_Plane.h"
 #include "Core/eGFX_Blit.h"
-#include "Core/eGFX_Animator.h"
 
 #include "Core/Fonts/FONT_3_5_1BPP.h"
 #include "Core/Fonts/FONT_5_7_1BPP.h"
 #include "Core/Fonts/FONT_10_14_1BPP.h"
 
+#include "Core/eGFX_Animator.h"
+
 #include "UI/eGFX_InputTypes.h"
 #include "UI/eGFX_Input.h"
+
 
 #include "UI/eGFX_Activity.h"
 

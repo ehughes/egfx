@@ -301,17 +301,22 @@ namespace lib_eGFX_Tools
 
                         Offset = (y * (MemWidthInBytes)) + (x >> 1);
 
-                        if ((x & 0x01) == 0)
+                        byte b = (byte)(PS >> 4);
+
+                        if ((x & 0x01) > 0)
                         {
-                            Data[Offset] &= (0xF0);
-                            Data[Offset] |= ((byte)(PS & 0xF));
+                             Data[Offset] &= (byte)(0xF0);
+                             Data[Offset] |= ((byte)(b & 0xF));
+
                         }
                         else
                         {
-                            Data[Offset] &= 0x0F;
-                            Data[Offset] |= (byte)((PS & 0xF) << 4);
-                        }
 
+                            Data[Offset] &= (byte)(0x0F);
+                            Data[Offset] |= ((byte)((b<<4)&0xF0));
+
+                        }
+                    
                         break;
 
       
@@ -409,7 +414,7 @@ namespace lib_eGFX_Tools
 
                         Offset = (y * (MemWidthInBytes)) + (x >> 1);
 
-                        if ((x & 0x01) == 0)
+                        if ((x & 0x01) > 0)
                             PS = (UInt32)Data[Offset] & 0x0F;
                         else
                             PS = (UInt32)(((Data[Offset]) >> 4) & 0x0F);
@@ -1164,14 +1169,23 @@ namespace lib_eGFX_Tools
 
         UInt32 Luma(Color PixelColor)
         {
-            return (UInt32)((PixelColor.R * 0.299) + (PixelColor.G * 0.587) + (PixelColor.B * 0.114));
+            
+            UInt32 L = (UInt32)((PixelColor.R * 0.299) + (PixelColor.G * 0.587) + (PixelColor.B * 0.114));
+
+            if(L>255)
+            {
+                L = 255;
+            }
+
+            return L;
+
         }
 
         UInt32 RemapPixelColor(eGFX_ImagePlaneType IPT, Color PixelColor)
         {
 
             UInt32 PS = 0;
-
+           
 
             switch (IPT)
             {
@@ -1219,13 +1233,13 @@ namespace lib_eGFX_Tools
 
                 case eGFX_ImagePlaneType.eGFX_IMAGE_PLANE_4BPP:
 
-                    PS = Luma(PixelColor)>>4;
+                    PS = Luma(PixelColor);
                   
                     break;
 
                 case eGFX_ImagePlaneType.eGFX_IMAGE_PLANE_8BPP:
 
-                    PS = Luma(PixelColor) >> 4;
+                    PS = Luma(PixelColor); 
 
                     break;
 

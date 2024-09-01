@@ -10,16 +10,17 @@ endif()
 
 set(eGFX_SRC 
 
-                          ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_Blit.c
-                          ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_PixelOps.c
-                          ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_Plane.c
-                          ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_PrimitiveOps.c
-                          ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_StringOps.c
-                        
-                          ${CMAKE_CURRENT_LIST_DIR}/Core/Fonts/FONT_3_5_1BPP.c
-                          ${CMAKE_CURRENT_LIST_DIR}/Core/Fonts/FONT_5_7_1BPP.c
-                          ${CMAKE_CURRENT_LIST_DIR}/Core/Fonts/FONT_10_14_1BPP.c
-                        )
+	${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_Animator.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_Blit.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_PixelOps.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_Plane.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_PrimitiveOps.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/eGFX_StringOps.c
+                       
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Fonts/FONT_3_5_1BPP.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Fonts/FONT_5_7_1BPP.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Fonts/FONT_10_14_1BPP.c
+    )
                         
 
 #add_library(eGFX STATIC ${eGFX_SRC})
