@@ -122,17 +122,18 @@ int main(int argc, char *argv[])
 	  
   	while (!ProcessSDL_Events()) 
   	{
-		SDL_Delay(24);
+		SDL_Delay(33);
 
 		eGFX_ImagePlane_Clear(&eGFX_BackBuffer[0]);
 
 		eGFX_Animator_ProcessList(Animators);
 
-		eGFX_DrawStringColored(&eGFX_BackBuffer[0], "Synchro", Line1.X, Line1.Y, &FONT_10_14_1BPP,0xFF);
+		eGFX_DrawStringColored(&eGFX_BackBuffer[0], "Chronos", Line1.X, Line1.Y, &FONT_10_14_1BPP,0xFF);
 	
 		eGFX_DrawStringColored(&eGFX_BackBuffer[0], "Serial: 10092", Line2.X, Line2.Y, &FONT_5_7_1BPP, 0xFF);
 				
 		eGFX_DrawStringColored(&eGFX_BackBuffer[0], "Firmware Version : v2.1", Line3.X, Line3.Y, &FONT_5_7_1BPP, 0xFF);
+
 		eGFX_DrawStringColored(&eGFX_BackBuffer[0], "Bootloader : v1.1", Line4.X, Line4.Y, &FONT_5_7_1BPP, 0xFF);
 
 
