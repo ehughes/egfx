@@ -1,13 +1,7 @@
 #ifndef _EGFX_CONFIG_H_
 #define _EGFX_CONFIG_H_
 
-/*
 
-Consider adding references to your driver header here
-
-#include "eGFX_DisplayDriver_SDL.h"
-
-/*
 
 /***
  *       ____               
