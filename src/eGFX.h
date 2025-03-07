@@ -13,23 +13,23 @@ extern "C" {
 
 #include "eGFX_DataTypes.h"
 
-#include "Core/eGFX_PixelOps.h"
-#include "Core/eGFX_PrimitiveOps.h"
-#include "Core/eGFX_StringOps.h"
-#include "Core/eGFX_Plane.h"
-#include "Core/eGFX_Blit.h"
+#include "eGFX_PixelOps.h"
+#include "eGFX_PrimitiveOps.h"
+#include "eGFX_StringOps.h"
+#include "eGFX_Plane.h"
+#include "eGFX_Blit.h"
 
-#include "Core/Fonts/FONT_3_5_1BPP.h"
-#include "Core/Fonts/FONT_5_7_1BPP.h"
-#include "Core/Fonts/FONT_10_14_1BPP.h"
+#include "FONT_3_5_1BPP.h"
+#include "FONT_5_7_1BPP.h"
+#include "FONT_10_14_1BPP.h"
 
-#include "Core/eGFX_Animator.h"
+#include "eGFX_Animator.h"
 
-#include "UI/eGFX_InputTypes.h"
-#include "UI/eGFX_Input.h"
+#include "eGFX_InputTypes.h"
+#include "eGFX_Input.h"
 
 
-#include "UI/eGFX_Activity.h"
+#include "eGFX_Activity.h"
 
 #endif
 

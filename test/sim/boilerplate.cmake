@@ -1,6 +1,8 @@
 
 set(TOOLS_DIR "${EGFX_DIR}/tools")
 set(eGFX_SRC "${EGFX_DIR}/src")
+set(eGFX_IO "${EGFX_DIR}/io")
+
 set(GLFW_DIR "${EGFX_DIR}/test/sim/glfw-3.4.bin.WIN64")
 set(IMGUI_DIR "${EGFX_DIR}/test/sim/imgui")
 

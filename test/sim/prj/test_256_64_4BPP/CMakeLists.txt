@@ -62,13 +62,13 @@ endfunction()
 generate_sprites()
 
 # Configure the ImGui driver header
-configure_file(${eGFX_SRC}/IO/Display/eGFX_DisplayDriver_ImGui.h.in
+configure_file(${eGFX_IO}/eGFX_DisplayDriver_ImGui.h.in
                ${CMAKE_CURRENT_LIST_DIR}/src/eGFX_DisplayDriver_ImGui.h)
 
 set(TEST_SRC    
     "${TEST_SRC_FOLDER}/eGFX_Test.c"
     "${TEST_SRC_FOLDER}/Sprites_${SIM_IMAGE_PLANE_DEPTH}.c" 
-    "${eGFX_SRC}/IO/Display/eGFX_DisplayDriver_ImGui.cpp"
+    "${eGFX_IO}/eGFX_DisplayDriver_ImGui.cpp"
     ${IMGUI_SOURCES}
 )
 
@@ -87,6 +87,7 @@ target_include_directories(
     ${TARGET} PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/src"
     ${eGFX_SRC}
+	${eGFX_IO}
     ${IMGUI_DIR}
     ${IMGUI_DIR}/backends
     ${OPENGL_INCLUDE_DIR}
