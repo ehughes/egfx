@@ -1,0 +1,13 @@
+{
+  "combined_output_name": "font_fragment_mono_28px_1bpp",
+  "bpp": [
+    "1bpp"
+  ],
+  "ascent": 8704,
+  "descent": -3328,
+  "line_spacing": 8448,
+  "inter_character_spacing": 0,
+  "spaces_per_tab": 4,
+  "glyph_overrides": {},
+  "kerning_pairs": {}
+}

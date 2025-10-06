@@ -1,0 +1,18 @@
+# Copyright (c) 2021 Legrand North America, LLC.
+# SPDX-License-Identifier: Apache-2.0
+
+menuconfig EGFX
+	bool "Enable EGFX graphics library"
+	help
+	  Enable eGFX embedded graphics library support
+
+if EGFX
+
+
+config EGFX_MAX_STRING_LEN
+	int "Number of back buffers"
+	default 256
+	help
+	  max string length for text functions
+
+endif # EGFX

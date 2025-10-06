@@ -1,0 +1,24 @@
+#ifndef _EGFX_CONFIG_H_
+#define _EGFX_CONFIG_H_
+
+/***
+ *       ____               
+ *      / ___|___  _ __ ___ 
+ *     | |   / _ \| '__/ _ \
+ *     | |__| (_) | | |  __/
+ *      \____\___/|_|  \___|
+ *                          
+ */
+ 
+
+#ifdef _MSC_VER 
+	#define EGFX_WEAK                                                
+#else
+	#define EGFX_WEAK                                          __attribute__((weak))
+#endif
+
+#ifndef CONFIG_EGFX_MAX_STRING_LEN
+    #define CONFIG_EGFX_MAX_STRING_LEN                         (@CONFIG_EGFX_MAX_STRING_LEN@)
+#endif
+
+#endif

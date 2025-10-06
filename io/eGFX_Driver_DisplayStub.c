@@ -4,17 +4,17 @@
 
 eGFX_ImagePlane eGFX_BackBuffer;
 
-uint8_t BackBufferStore[eGFX_CALCULATE_4BPP_IMAGE_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X,eGFX_PHYSICAL_SCREEN_SIZE_Y)];
+uint8_t BackBufferStore[EGFX_CALC_4BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X,eGFX_PHYSICAL_SCREEN_SIZE_Y)];
 
-eGFX_VSyncCallback_t *VSyncCallback;
+egfx_vsync_callback_t *VSyncCallback;
 
-void eGFX_InitDriver(eGFX_VSyncCallback_t VS)
+void eGFX_InitDriver(egfx_vsync_callback_t VS)
 {
-    eGFX_ImagePlaneInit(&eGFX_BackBuffer,
-                        BackBufferStore,
-                        eGFX_PHYSICAL_SCREEN_SIZE_X,
-                        eGFX_PHYSICAL_SCREEN_SIZE_Y,
-                        eGFX_IMAGE_PLANE_4BPP);
+    egfx_image_plane_init(&eGFX_BackBuffer,
+                          BackBufferStore,
+                          eGFX_PHYSICAL_SCREEN_SIZE_X,
+                          eGFX_PHYSICAL_SCREEN_SIZE_Y,
+                          EGFX_IMG_4BPP);
 
 
     VSyncCallback = VS;

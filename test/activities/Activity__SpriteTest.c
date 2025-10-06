@@ -6,15 +6,15 @@ int Cnt = 0;
 
 #define NUM_SPRITES		3
 
-static eGFX_Obj_Sprite Sprite[NUM_SPRITES];
-static eGFX_Point_Animator PointAnim[NUM_SPRITES];
-static eGFX_Scalar_Animator ScalarAnim[NUM_SPRITES];
+static egfx_obj_sprite Sprite[NUM_SPRITES];
+static egfx_point_animator PointAnim[NUM_SPRITES];
+static egfx_scalar_animator ScalarAnim[NUM_SPRITES];
 
 #define FRAC_X	0.16
 #define FRAC_Y  0.16
 #define MAX_FRAMES	200
-#define ANIM_MODE_POS eGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
-#define ANIM_MODE_RAD eGFX_ANIMATOR_MODE__LINEAR
+#define ANIM_MODE_POS EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
+#define ANIM_MODE_RAD EGFX_ANIMATOR_MODE__LINEAR
 
 static uint32_t AnimPhase = 0;
 
@@ -28,7 +28,7 @@ static eGFX_ImagePlane * BackgroundImage;
 
 static eGFX_ImagePlane * ForegroundImage;
 
-static eGFX_PixelState BackgroundColor = 0;
+static egfx_pixel_state BackgroundColor = 0;
 
 void Activity__Sprite_Enter(uint32_t MessageID, void *Message)
 {
@@ -44,12 +44,12 @@ void Activity__Sprite_Enter(uint32_t MessageID, void *Message)
 	{
 		for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++)
 		{
-			eGFX_Blit(&eGFX_BackBuffer[i], 0, 0, BackgroundImage);
+			egfx_blit(&eGFX_BackBuffer[i], BackgroundImage, (egfx_point){0, 0});
 		}
 	}
 	else
 	{
-		eGFX_Rect R;
+		egfx_rect R;
 
 		R.P1.X = 0;
 		R.P1.Y = 0;
@@ -100,16 +100,16 @@ void Activity__Sprite_Enter(uint32_t MessageID, void *Message)
 
 		eGFX_Init_PointAnimator(&PointAnim[i],
 			Sprite[i].Position,
-			(eGFX_Point) {
+			(egfx_point) {
 			200, 60 + i * 60
 		},
 			&(Sprite[i].Position), //Point this to the thing you want to animate
 				MAX_FRAMES,      //Maximum allowed frames before forced convergence
-				(eGFX_PointF) {
+				(egfx_pointf) {
 				FRAC_X, FRAC_Y
 			}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-				(eGFX_ObjectHeader *)&Sprite[i], // Object to Mark when animation is stepped;
-					eGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
+				(egfx_object_header *)&Sprite[i], // Object to Mark when animation is stepped;
+					EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
 					);
 
 		if (i != 0)
@@ -187,16 +187,16 @@ void Activity__Sprite_Process()
 			}
 			eGFX_Init_PointAnimator(&PointAnim[i],
 				Sprite[i].Position,
-				(eGFX_Point) {
+				(egfx_point) {
 				TargetX, TargetY
 			},
 				&(Sprite[i].Position), //Point this to the thing you want to animate
 					MAX_FRAMES,      //Maximum allowed frames before forced convergence
-					(eGFX_PointF) {
+					(egfx_pointf) {
 					FRAC_X, FRAC_Y
 				}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-					(eGFX_ObjectHeader *)&Sprite[i], // Object to Mark when animation is stepped;
-						eGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
+					(egfx_object_header *)&Sprite[i], // Object to Mark when animation is stepped;
+						EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
 						);
 
 			if (i != 0)

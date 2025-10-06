@@ -12,7 +12,7 @@
 #define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 128)
 #define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 64)
 
-#define eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE   eGFX_IMAGE_PLANE_4BPP
+#define eGFX_DISPLAY_DRIVER_IMG_TYPE   EGFX_IMG_4BPP
 
 
   /*
@@ -20,7 +20,7 @@
       setup eGFX_BackBuffer
   */
 
-extern void  eGFX_InitDriver(eGFX_VSyncCallback_t VS));
+extern void  eGFX_InitDriver(egfx_vsync_callback_t VS));
 
 /*
      eGFX_Dump() should dump an ImagePlane to the physical screen.

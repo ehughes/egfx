@@ -1,4 +1,4 @@
-#include "eGFX_DataTypes.h"
+#include "egfx_types.h"
 
 #ifndef eGFX_DRIVER_IMGUI
 #define eGFX_DRIVER_IMGUI
@@ -34,7 +34,7 @@
 */
 #define eGFX_DISPLAY_DRIVER_PRESENT
 
-#define eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE   @SIM_IMAGE_PLANE_TYPE@
+#define eGFX_DISPLAY_DRIVER_IMG_TYPE   @SIM_IMG_TYPE@
 
 #define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) @SIM_PHYSICAL_SCREEN_SIZE_X@)
 #define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) @SIM_PHYSICAL_SCREEN_SIZE_Y@)
@@ -52,7 +52,7 @@ extern "C" {
 */
 extern int ProcessSimEvents();
 
-extern void eGFX_InitDriver(eGFX_VSyncCallback_t VS);
+extern void eGFX_InitDriver(egfx_vsync_callback_t VS);
 
 /*
    eGFX_DeInitDriver() is provided in case you want some way of shutting down the graphics
@@ -62,7 +62,7 @@ extern void eGFX_DeInitDriver();
 /*
     eGFX_Dump() should dump an ImagePlane to the physical screen.
 */
-extern void eGFX_Dump(eGFX_ImagePlane *Image);
+extern void eGFX_Dump(egfx_img *Image);
 
 /*
     A driver should expose at least one back buffer that is the physical screen size and have
@@ -70,7 +70,7 @@ extern void eGFX_Dump(eGFX_ImagePlane *Image);
 */
 #define eGFX_NUM_BACKBUFFERS 2
 
-extern eGFX_ImagePlane eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS];
+extern egfx_img* eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS];
 
 extern uint32_t eGFX_GetInactiveBackBuffer();
 

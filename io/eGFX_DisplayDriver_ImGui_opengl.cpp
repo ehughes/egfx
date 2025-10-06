@@ -30,7 +30,7 @@
 #endif
 
 // Regular includes
-#include "eGFX.h"
+#include "egfx.h"
 #include "eGFX_DisplayDriver_ImGui.h"
 #include <stdio.h>
 #include <string.h>
@@ -47,7 +47,7 @@ uint32_t TextureBuffer[eGFX_PHYSICAL_SCREEN_SIZE_X * eGFX_PHYSICAL_SCREEN_SIZE_Y
 
 eGFX_ImagePlane TexturePlane = 
 {
-    .Type = eGFX_IMAGE_PLANE_32BPP_XRGB888,
+    .type = EGFX_IMG_32BPP_XRGB888,
     .Data = (uint8_t *)TextureBuffer,
     .SizeX = eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE,
     .SizeY = eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE,
@@ -64,26 +64,26 @@ char WindowTitle[64];
 eGFX_ImagePlane eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS];
 
 // Frame buffer definitions based on bit depth
-#if (eGFX_IMAGE_PLANE_BITS_PER_PIXEL_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE) == 1)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][eGFX_CALCULATE_1BPP_IMAGE_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (eGFX_IMAGE_PLANE_BITS_PER_PIXEL_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE) == 3)
-uint8_t eGFX_FrameBuffer[eGFX_CALCULATE_3BPP_IMAGE_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (eGFX_IMAGE_PLANE_BITS_PER_PIXEL_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE) == 4)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][eGFX_CALCULATE_4BPP_IMAGE_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (eGFX_IMAGE_PLANE_BITS_PER_PIXEL_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE) == 8)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][eGFX_CALCULATE_8BPP_IMAGE_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (eGFX_IMAGE_PLANE_BITS_PER_PIXEL_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE) == 16)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][eGFX_CALCULATE_16BPP_IMAGE_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (eGFX_IMAGE_PLANE_BITS_PER_PIXEL_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE) == 24)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][eGFX_CALCULATE_24BPP_IMAGE_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (eGFX_IMAGE_PLANE_BITS_PER_PIXEL_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE) == 32)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][eGFX_CALCULATE_32BPP_IMAGE_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#if (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 1)
+uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_1BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 3)
+uint8_t eGFX_FrameBuffer[EGFX_CALC_3BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 4)
+uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_4BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 8)
+uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_8BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 16)
+uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_16BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 24)
+uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_24BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 32)
+uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_32BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
 #else 
 #error "I need a valid backbuffer image plane type"
 #endif
 
 static uint32_t InactiveBackBuffer = 0;
-eGFX_VSyncCallback_t *VSyncCallback;
+egfx_vsync_callback_t *VSyncCallback;
 
 // Error callback for GLFW
 static void glfw_error_callback(int error, const char* description) {
@@ -95,7 +95,7 @@ void UpdateWindowTitle() {
               eGFX_PHYSICAL_SCREEN_SIZE_X, 
               eGFX_PHYSICAL_SCREEN_SIZE_Y,
               eGFX_Zoom,
-              eGFX_IMAGE_PLANE_BITS_PER_PIXEL_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE)
+              EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE)
     );
 }
 
@@ -152,16 +152,16 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
     glfwSetWindowTitle(eGFX_Window, WindowTitle);
 }
 
-void eGFX_InitDriver(eGFX_VSyncCallback_t VS) {
+void eGFX_InitDriver(egfx_vsync_callback_t VS) {
     VSyncCallback = VS;
 
     // Initialize back buffers
     for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++) {
-        eGFX_ImagePlaneInit(&eGFX_BackBuffer[i],
+        egfx_image_plane_init(&eGFX_BackBuffer[i],
             &eGFX_FrameBuffer[i][0],
             eGFX_PHYSICAL_SCREEN_SIZE_X,
             eGFX_PHYSICAL_SCREEN_SIZE_Y,
-            eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE);
+            eGFX_DISPLAY_DRIVER_IMG_TYPE);
     }
 
     memset(eGFX_FrameBuffer, 0, sizeof(eGFX_FrameBuffer));
@@ -253,7 +253,7 @@ void eGFX_InitDriver(eGFX_VSyncCallback_t VS) {
 
 }
  void eGFX_Dump(eGFX_ImagePlane *Image) {
-    eGFX_PixelState PS;
+    egfx_pixel_state PS;
     int r, g, b;
     uint32_t TexturePixelColor = 0;
     
@@ -262,7 +262,7 @@ void eGFX_InitDriver(eGFX_VSyncCallback_t VS) {
 
     // Clear texture buffer for grid mode
     #if (eGFX_IMGUI_SIM_GRID == 1)
-        eGFX_Box PixelBox;
+        egfx_box PixelBox;
         for (int k = 0; k < sizeof(TextureBuffer) / sizeof(uint32_t); k++) {
             TextureBuffer[k] = eGFX_IMGUI_SIM_GRID_BACKGROUND_COLOR;
         }
@@ -271,35 +271,35 @@ void eGFX_InitDriver(eGFX_VSyncCallback_t VS) {
     // Process each pixel from the image plane
     for (int y = 0; y < eGFX_PHYSICAL_SCREEN_SIZE_Y; y++) {
         for (int x = 0; x < eGFX_PHYSICAL_SCREEN_SIZE_X; x++) {
-            PS = eGFX_GetPixel(Image, x, y);
+            PS = egfx_get_pixel(Image, x, y);
             
             // Convert pixel based on image type
             r = g = b = 0;
             
-            switch (Image->Type) {
-                case eGFX_IMAGE_PLANE_1BPP:
+            switch (Image->type) {
+                case EGFX_IMG_1BPP:
                     TexturePixelColor = PS ? 0xFFFFFFFF : 0xFF000000;
                     break;
                     
-                case eGFX_IMAGE_PLANE_4BPP:
+                case EGFX_IMG_4BPP:
                     PS &= 0xF;
-                    TexturePixelColor = 0xFF000000 | eGFX_COLOR_RGB_TO_RGBX888(PS << 4, PS << 4, PS << 4);
+                    TexturePixelColor = 0xFF000000 | EGFX_COLOR_RGB_TO_RGBX888(PS << 4, PS << 4, PS << 4);
                     break;
                     
                 // [other pixel conversions as in your original code]
                 
-                case eGFX_IMAGE_PLANE_32BPP:
-                case eGFX_IMAGE_PLANE_32BPP_XRGB888:
+                case EGFX_IMG_32BPP:
+                case EGFX_IMG_32BPP_XRGB888:
                     TexturePixelColor = PS | 0xFF000000;
                     break;
             }
             
             // Draw pixel to texture buffer
             #if (eGFX_IMGUI_SIM_GRID == 1)
-                PixelBox.P1.X = eGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (x * (TEXTURE_BUFFER_PIXEL_SIZE));
-                PixelBox.P1.Y = eGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (y * (TEXTURE_BUFFER_PIXEL_SIZE));
-                PixelBox.P2.X = PixelBox.P1.X + eGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
-                PixelBox.P2.Y = PixelBox.P1.Y + eGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
+                PixelBox.p1.x = eGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (x * (TEXTURE_BUFFER_PIXEL_SIZE));
+                PixelBox.p1.y = eGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (y * (TEXTURE_BUFFER_PIXEL_SIZE));
+                PixelBox.p2.x = PixelBox.p1.x + eGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
+                PixelBox.p2.y = PixelBox.p1.y + eGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
                 eGFX_DrawFilledBox(&TexturePlane, &PixelBox, TexturePixelColor);
             #else
                 TextureBuffer[y * eGFX_PHYSICAL_SCREEN_SIZE_X + x] = TexturePixelColor;

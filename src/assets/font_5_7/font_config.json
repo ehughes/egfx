@@ -1,0 +1,14 @@
+{
+    "ascent": 0,
+    "descent": 0,
+    "line_spacing": 0,
+    "spaces_per_tab": 4,
+    "inter_character_spacing": 1,
+    "combined_output_name": "font_5_7",
+    "bpp": ["1bpp"],
+    "glyph_overrides": {
+        "0x03BB": "U+03BB_lambda.png",
+        "0x03C0": "U+03C0_pi.png",
+        "0x03BC": "U+03BC_mu.png"
+    }
+}
