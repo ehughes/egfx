@@ -253,3 +253,125 @@ void EGFX_WEAK egfx_blit_ex(const egfx_blit_config *config)
 			break;
 	}
 }
+
+void EGFX_WEAK egfx_blit_faded(egfx_img *dest,
+                               const egfx_img *src,
+                               egfx_point position,
+                               uint8_t fade)
+{
+	// Determine logical dimensions for destination (transpose-aware)
+	uint16_t dest_logical_size_x, dest_logical_size_y;
+	if (dest->flags & EGFX_IMG_FLAGS_TRANSPOSE) {
+		dest_logical_size_x = dest->size_y;
+		dest_logical_size_y = dest->size_x;
+	} else {
+		dest_logical_size_x = dest->size_x;
+		dest_logical_size_y = dest->size_y;
+	}
+
+	// Calculate destination region
+	int32_t x1_dst = position.x;
+	int32_t y1_dst = position.y;
+	int32_t x2_dst = position.x + src->size_x - 1;
+	int32_t y2_dst = position.y + src->size_y - 1;
+
+	// Reject if completely offscreen
+	if (x1_dst >= dest_logical_size_x) return;
+	if (x2_dst < 0) return;
+	if (y1_dst >= dest_logical_size_y) return;
+	if (y2_dst < 0) return;
+
+	// Calculate source bounds
+	int32_t src_start_x = 0;
+	int32_t src_start_y = 0;
+	int32_t src_stop_x = src->size_x - 1;
+	int32_t src_stop_y = src->size_y - 1;
+
+	// Clip to destination bounds
+	if (x1_dst < 0) {
+		src_start_x -= x1_dst;
+		x1_dst = 0;
+	}
+	if (x2_dst >= dest_logical_size_x) {
+		src_stop_x -= (x2_dst - dest_logical_size_x + 1);
+	}
+	if (y1_dst < 0) {
+		src_start_y -= y1_dst;
+		y1_dst = 0;
+	}
+	if (y2_dst >= dest_logical_size_y) {
+		src_stop_y -= (y2_dst - dest_logical_size_y + 1);
+	}
+
+	// Get pixel functions
+	egfx_put_pixel_t *put_pixel = egfx_get_put_pixel_func(dest);
+	egfx_get_pixel_t *get_pixel = egfx_get_get_pixel_func(src);
+
+	uint8_t src_bpp = src->bits_per_pixel;
+	uint16_t dest_type = EGFX_IMG_GET_TYPE(dest);
+
+	int32_t dest_y = y1_dst;
+	for (int32_t src_y = src_start_y; src_y <= src_stop_y; src_y++, dest_y++)
+	{
+		int32_t dest_x = x1_dst;
+		for (int32_t src_x = src_start_x; src_x <= src_stop_x; src_x++, dest_x++)
+		{
+			egfx_pixel_state src_pixel = get_pixel(src, src_x, src_y);
+			egfx_pixel_state faded_pixel;
+
+			// Apply fade based on bit depth
+			switch (src_bpp)
+			{
+				case 1:
+					// 1BPP: threshold - if fade < 128, turn off
+					faded_pixel = (fade >= 128) ? src_pixel : 0;
+					break;
+
+				case 4:
+					// 4BPP grayscale: scale 0-15 value
+					faded_pixel = ((src_pixel & 0x0F) * fade) >> 8;
+					break;
+
+				case 8:
+					// 8BPP grayscale: scale 0-255 value
+					faded_pixel = ((src_pixel & 0xFF) * fade) >> 8;
+					break;
+
+				case 16:
+				{
+					// 16BPP RGB565: scale each channel
+					uint16_t pixel16 = (uint16_t)src_pixel;
+					uint8_t r = (pixel16 >> 11) & 0x1F;
+					uint8_t g = (pixel16 >> 5) & 0x3F;
+					uint8_t b = pixel16 & 0x1F;
+					r = (r * fade) >> 8;
+					g = (g * fade) >> 8;
+					b = (b * fade) >> 8;
+					faded_pixel = (r << 11) | (g << 5) | b;
+					break;
+				}
+
+				case 24:
+				case 32:
+				{
+					// 24/32BPP RGB: scale each channel
+					uint8_t r = (src_pixel >> 16) & 0xFF;
+					uint8_t g = (src_pixel >> 8) & 0xFF;
+					uint8_t b = src_pixel & 0xFF;
+					r = (r * fade) >> 8;
+					g = (g * fade) >> 8;
+					b = (b * fade) >> 8;
+					faded_pixel = (r << 16) | (g << 8) | b;
+					break;
+				}
+
+				default:
+					// Fallback: just scale raw value
+					faded_pixel = (src_pixel * fade) >> 8;
+					break;
+			}
+
+			put_pixel(dest, dest_x, dest_y, faded_pixel);
+		}
+	}
+}

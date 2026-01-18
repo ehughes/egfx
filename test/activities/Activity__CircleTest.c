@@ -39,14 +39,14 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 
 	CircleTestActiveBuffer = 0;
 
-	ForegroundImage = &eGFX_BackBuffer[CircleTestActiveBuffer];
+	ForegroundImage = &egfx_back_buffer[CircleTestActiveBuffer];
 
 
 	if (Message != NULL)
 	{
-		for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++)
+		for (int i = 0; i < EGFX_NUM_BACKBUFFERS; i++)
 		{
-			egfx_blit(&eGFX_BackBuffer[i], BackgroundImage, (egfx_point){0, 0});
+			egfx_blit(&egfx_back_buffer[i], BackgroundImage, (egfx_point){0, 0});
 		}
 	}
 	else
@@ -55,12 +55,12 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 
 		R.P1.X = 0;
 		R.P1.Y = 0;
-		R.P2.X = eGFX_PHYSICAL_SCREEN_SIZE_X - 1;
-		R.P2.Y = eGFX_PHYSICAL_SCREEN_SIZE_Y - 1;
+		R.P2.X = EGFX_PHYSICAL_SCREEN_SIZE_X - 1;
+		R.P2.Y = EGFX_PHYSICAL_SCREEN_SIZE_Y - 1;
 
-		for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++)
+		for (int i = 0; i < EGFX_NUM_BACKBUFFERS; i++)
 		{
-			eGFX_DrawSolidRectangle(&eGFX_BackBuffer[i], &R, BackgroundColor);
+			egfx_draw_solid_rectangle(&egfx_back_buffer[i], &R, BackgroundColor);
 		}
 	}
 
@@ -68,7 +68,7 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 	{
 		eGFX_InitObject_Circle(&Circle[i], 0, &ForegroundImage);
 
-		if (eGFX_NUM_BACKBUFFERS == 2)
+		if (EGFX_NUM_BACKBUFFERS == 2)
 			Circle[i].DoubleBuffered = true;
 		else
 			Circle[i].DoubleBuffered = false;
@@ -99,7 +99,7 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 			Circle[i].Header.BackgroundColor = &BackgroundColor;
 		}
 
-		eGFX_Init_PointAnimator(&PointAnim[i],
+		egfx_init_point_animator(&PointAnim[i],
 			Circle[i].Position,
 			(egfx_point) {
 			rand() % 240 + 120, rand() % 240 + 120
@@ -114,7 +114,7 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 					);
 
 
-		eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+		egfx_init_scalar_animator(&ScalarAnim[i],
 			Circle[i].Radius,
 			10,
 			&Circle[i].Radius, //Point this to the thing you want to animate
@@ -125,15 +125,15 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 		);
 
 		if (i != 0)
-			eGFX_AddAnimator(AnimatorList, &PointAnim[i]);
+			egfx_animator_add_to_list(AnimatorList, &PointAnim[i]);
 	}
 
 	for (int i = 0; i < NUM_CIRCLES; i++)
 	{
-		eGFX_AddAnimator(AnimatorList, &ScalarAnim[i]);
+		egfx_animator_add_to_list(AnimatorList, &ScalarAnim[i]);
 	}
 
-	eGFX_StartAnimators(AnimatorList);
+	egfx_start_animators(AnimatorList);
 
 
 
@@ -166,7 +166,7 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 void Activity__Circle_Process()
 {
 
-	if (eGFX_NUM_BACKBUFFERS == 2)
+	if (EGFX_NUM_BACKBUFFERS == 2)
 	{
 		CircleTestActiveBuffer++;
 
@@ -176,16 +176,16 @@ void Activity__Circle_Process()
 	{
 		CircleTestActiveBuffer = 0;
 	}
-	ForegroundImage = &eGFX_BackBuffer[CircleTestActiveBuffer];
+	ForegroundImage = &egfx_back_buffer[CircleTestActiveBuffer];
 
 	eGFX_ProcessObjects(ObjectList, eGFX_OBJECT_DRAW_CMD__RESTORE);
 
 	eGFX_ProcessObjects(ObjectList, eGFX_OBJECT_DRAW_CMD__PAINT);
 
-	eGFX_ProcessAnimators(AnimatorList);
+	egfx_animator_process_list(AnimatorList);
 
 
-	if (eGFX_AnimatorsAreComplete(AnimatorList) == eGFX_TRUE)
+	if (egfx_animators_are_complete(AnimatorList) == eGFX_TRUE)
 	{
 
 		AnimPhase++;
@@ -200,10 +200,10 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 140.0f * cosf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 140.0f * sinf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 140.0f * cosf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 140.0f * sinf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
 					(egfx_point) {
 					x, y
@@ -217,7 +217,7 @@ void Activity__Circle_Process()
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					8,
 					&Circle[i].Radius, //Point this to the thing you want to animate
@@ -233,10 +233,10 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 180.0f * cosf((float)(i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 180.0f * sinf((float)(i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 180.0f * cosf((float)(i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 180.0f * sinf((float)(i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
 					(egfx_point) {
 					x, y
@@ -250,7 +250,7 @@ void Activity__Circle_Process()
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					9,
 					&Circle[i].Radius, //Point this to the thing you want to animate
@@ -266,10 +266,10 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 180.0f * cosf((float)(i + 2) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 180.0f * sinf((float)(i + 2) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 180.0f * cosf((float)(i + 2) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 180.0f * sinf((float)(i + 2) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
 					(egfx_point) {
 					x, y
@@ -283,7 +283,7 @@ void Activity__Circle_Process()
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					9,
 					&Circle[i].Radius, //Point this to the thing you want to animate
@@ -299,11 +299,11 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 100.0 * cosf((float)(NUM_CIRCLES / 2 - i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 100.0 * sinf((float)(NUM_CIRCLES / 2 - i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 100.0 * cosf((float)(NUM_CIRCLES / 2 - i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 100.0 * sinf((float)(NUM_CIRCLES / 2 - i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
 					(egfx_point) {
 					x, y
@@ -317,7 +317,7 @@ void Activity__Circle_Process()
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					5,
 					&Circle[i].Radius, //Point this to the thing you want to animate
@@ -333,11 +333,11 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = i * (eGFX_PHYSICAL_SCREEN_SIZE_X / (NUM_CIRCLES)) + (eGFX_PHYSICAL_SCREEN_SIZE_X / (NUM_CIRCLES)) / 2;
-				float y = eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = i * (EGFX_PHYSICAL_SCREEN_SIZE_X / (NUM_CIRCLES)) + (EGFX_PHYSICAL_SCREEN_SIZE_X / (NUM_CIRCLES)) / 2;
+				float y = EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
 					(egfx_point) {
 					x, y
@@ -351,7 +351,7 @@ void Activity__Circle_Process()
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					5,
 					&Circle[i].Radius, //Point this to the thing you want to animate
@@ -367,10 +367,10 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 0 * cosf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 0 * sinf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 0 * cosf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 0 * sinf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
 					(egfx_point) {
 					x, y
@@ -384,7 +384,7 @@ void Activity__Circle_Process()
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					1,
 					&Circle[i].Radius, //Point this to the thing you want to animate
@@ -399,7 +399,7 @@ void Activity__Circle_Process()
 		{
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
 					(egfx_point) {
 					(rand() % 480), (rand() % 480)
@@ -413,7 +413,7 @@ void Activity__Circle_Process()
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					rand() % 15,
 					&Circle[i].Radius, //Point this to the thing you want to animate
@@ -425,12 +425,12 @@ void Activity__Circle_Process()
 			}
 		}
 
-		eGFX_StartAnimators(AnimatorList);
+		egfx_start_animators(AnimatorList);
 	}
 
 	eGFX_WaitForV_Sync();
 
-	eGFX_Dump(&eGFX_BackBuffer[CircleTestActiveBuffer]);
+	egfx_dump(&egfx_back_buffer[CircleTestActiveBuffer]);
 
 
 	return;

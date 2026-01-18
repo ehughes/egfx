@@ -36,49 +36,49 @@
 #include <string.h>
 
 
-#if eGFX_IMGUI_SIM_GRID == 1
-#define TEXTURE_BUFFER_PIXEL_SIZE (eGFX_IMGUI_SIM_GRID_PIXEL_SIZE + (eGFX_IMGUI_SIM_GRID_PIXEL_BORDER*2))
+#if EGFX_IMGUI_SIM_GRID == 1
+#define TEXTURE_BUFFER_PIXEL_SIZE (EGFX_IMGUI_SIM_GRID_PIXEL_SIZE + (EGFX_IMGUI_SIM_GRID_PIXEL_BORDER*2))
 #else
 #define TEXTURE_BUFFER_PIXEL_SIZE 1
 #endif
 
 // Texture buffer for our simulated LCD
-uint32_t TextureBuffer[eGFX_PHYSICAL_SCREEN_SIZE_X * eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * TEXTURE_BUFFER_PIXEL_SIZE];
+uint32_t TextureBuffer[EGFX_PHYSICAL_SCREEN_SIZE_X * EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * TEXTURE_BUFFER_PIXEL_SIZE];
 
-eGFX_ImagePlane TexturePlane = 
+eGFX_ImagePlane TexturePlane =
 {
     .type = EGFX_IMG_32BPP_XRGB888,
     .Data = (uint8_t *)TextureBuffer,
-    .SizeX = eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE,
-    .SizeY = eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE,
+    .SizeX = EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE,
+    .SizeY = EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE,
     .User = NULL
 };
 
 // GLFW and ImGui globals
-GLFWwindow* eGFX_Window;
-GLuint eGFX_TextureID;
-float eGFX_Zoom = 1.0f;
-bool eGFX_ShouldClose = false;
+GLFWwindow* egfx_window;
+GLuint egfx_texture_id;
+float egfx_zoom = 1.0f;
+bool egfx_should_close = false;
 char WindowTitle[64];
 
-eGFX_ImagePlane eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS];
+eGFX_ImagePlane egfx_back_buffer[EGFX_NUM_BACKBUFFERS];
 
 // Frame buffer definitions based on bit depth
-#if (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 1)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_1BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 3)
-uint8_t eGFX_FrameBuffer[EGFX_CALC_3BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 4)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_4BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 8)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_8BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 16)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_16BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 24)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_24BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#elif (EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE) == 32)
-uint8_t eGFX_FrameBuffer[eGFX_NUM_BACKBUFFERS][EGFX_CALC_32BPP_IMG_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y)];
-#else 
+#if (EGFX_IMG_BPP_FROM_TYPE(EGFX_DISPLAY_DRIVER_IMG_TYPE) == 1)
+uint8_t egfx_frame_buffer[EGFX_NUM_BACKBUFFERS][EGFX_CALC_1BPP_IMG_STORAGE_SPACE_SIZE(EGFX_PHYSICAL_SCREEN_SIZE_X, EGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(EGFX_DISPLAY_DRIVER_IMG_TYPE) == 3)
+uint8_t egfx_frame_buffer[EGFX_CALC_3BPP_IMG_STORAGE_SPACE_SIZE(EGFX_PHYSICAL_SCREEN_SIZE_X, EGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(EGFX_DISPLAY_DRIVER_IMG_TYPE) == 4)
+uint8_t egfx_frame_buffer[EGFX_NUM_BACKBUFFERS][EGFX_CALC_4BPP_IMG_STORAGE_SPACE_SIZE(EGFX_PHYSICAL_SCREEN_SIZE_X, EGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(EGFX_DISPLAY_DRIVER_IMG_TYPE) == 8)
+uint8_t egfx_frame_buffer[EGFX_NUM_BACKBUFFERS][EGFX_CALC_8BPP_IMG_STORAGE_SPACE_SIZE(EGFX_PHYSICAL_SCREEN_SIZE_X, EGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(EGFX_DISPLAY_DRIVER_IMG_TYPE) == 16)
+uint8_t egfx_frame_buffer[EGFX_NUM_BACKBUFFERS][EGFX_CALC_16BPP_IMG_STORAGE_SPACE_SIZE(EGFX_PHYSICAL_SCREEN_SIZE_X, EGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(EGFX_DISPLAY_DRIVER_IMG_TYPE) == 24)
+uint8_t egfx_frame_buffer[EGFX_NUM_BACKBUFFERS][EGFX_CALC_24BPP_IMG_STORAGE_SPACE_SIZE(EGFX_PHYSICAL_SCREEN_SIZE_X, EGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#elif (EGFX_IMG_BPP_FROM_TYPE(EGFX_DISPLAY_DRIVER_IMG_TYPE) == 32)
+uint8_t egfx_frame_buffer[EGFX_NUM_BACKBUFFERS][EGFX_CALC_32BPP_IMG_STORAGE_SPACE_SIZE(EGFX_PHYSICAL_SCREEN_SIZE_X, EGFX_PHYSICAL_SCREEN_SIZE_Y)];
+#else
 #error "I need a valid backbuffer image plane type"
 #endif
 
@@ -92,14 +92,14 @@ static void glfw_error_callback(int error, const char* description) {
 
 void UpdateWindowTitle() {
     snprintf(WindowTitle, sizeof(WindowTitle), "%d x %d  Zoom:%.1f %dBPP",
-              eGFX_PHYSICAL_SCREEN_SIZE_X, 
-              eGFX_PHYSICAL_SCREEN_SIZE_Y,
-              eGFX_Zoom,
-              EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE)
+              EGFX_PHYSICAL_SCREEN_SIZE_X,
+              EGFX_PHYSICAL_SCREEN_SIZE_Y,
+              egfx_zoom,
+              EGFX_IMG_BPP_FROM_TYPE(EGFX_DISPLAY_DRIVER_IMG_TYPE)
     );
 }
 
-uint32_t eGFX_GetInactiveBackBuffer() {
+uint32_t egfx_get_inactive_back_buffer() {
     return InactiveBackBuffer++;
 }
 
@@ -107,25 +107,25 @@ uint32_t eGFX_GetInactiveBackBuffer() {
 int ProcessSimEvents() {
     // Poll and handle events
     glfwPollEvents();
-    
-    if (glfwWindowShouldClose(eGFX_Window)) {
+
+    if (glfwWindowShouldClose(egfx_window)) {
         return -1;
     }
-    
+
     return 0;
 }
 
-void eGFX_DeInitDriver() {
+void egfx_deinit_driver() {
     // Clean up ImGui and GLFW
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    
-    if (eGFX_TextureID) {
-        glDeleteTextures(1, &eGFX_TextureID);
+
+    if (egfx_texture_id) {
+        glDeleteTextures(1, &egfx_texture_id);
     }
-    
-    glfwDestroyWindow(eGFX_Window);
+
+    glfwDestroyWindow(egfx_window);
     glfwTerminate();
 }
 
@@ -140,39 +140,39 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     // Wheel up (yoffset > 0) increases zoom, wheel down decreases
     if (yoffset > 0)
-        eGFX_Zoom = std::min(4.0f, eGFX_Zoom + .25f); // Increment by 1, max at 10
+        egfx_zoom = std::min(4.0f, egfx_zoom + .25f); // Increment by 1, max at 10
     else if (yoffset < 0)
-        eGFX_Zoom = std::max(1.0f, eGFX_Zoom - .25f);  // Decrement by 1, min at 1
-    
+        egfx_zoom = std::max(1.0f, egfx_zoom - .25f);  // Decrement by 1, min at 1
+
     // Mark that zoom changed
     zoomChanged = true;
-    
+
     // Update the window title with the new zoom value
     UpdateWindowTitle();
-    glfwSetWindowTitle(eGFX_Window, WindowTitle);
+    glfwSetWindowTitle(egfx_window, WindowTitle);
 }
 
-void eGFX_InitDriver(egfx_vsync_callback_t VS) {
+void egfx_init_driver(egfx_vsync_callback_t VS) {
     VSyncCallback = VS;
 
     // Initialize back buffers
-    for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++) {
-        egfx_image_plane_init(&eGFX_BackBuffer[i],
-            &eGFX_FrameBuffer[i][0],
-            eGFX_PHYSICAL_SCREEN_SIZE_X,
-            eGFX_PHYSICAL_SCREEN_SIZE_Y,
-            eGFX_DISPLAY_DRIVER_IMG_TYPE);
+    for (int i = 0; i < EGFX_NUM_BACKBUFFERS; i++) {
+        egfx_image_plane_init(&egfx_back_buffer[i],
+            &egfx_frame_buffer[i][0],
+            EGFX_PHYSICAL_SCREEN_SIZE_X,
+            EGFX_PHYSICAL_SCREEN_SIZE_Y,
+            EGFX_DISPLAY_DRIVER_IMG_TYPE);
     }
 
-    memset(eGFX_FrameBuffer, 0, sizeof(eGFX_FrameBuffer));
+    memset(egfx_frame_buffer, 0, sizeof(egfx_frame_buffer));
 
     // Set initial zoom
-#ifndef eGFX_IMGUI_INITIAL_ZOOM
-    eGFX_Zoom = 640.0f / eGFX_PHYSICAL_SCREEN_SIZE_X;
+#ifndef EGFX_IMGUI_INITIAL_ZOOM
+    egfx_zoom = 640.0f / EGFX_PHYSICAL_SCREEN_SIZE_X;
 #else
-    eGFX_Zoom = eGFX_IMGUI_INITIAL_ZOOM;
-    if (eGFX_Zoom < 1.0f) {
-        eGFX_Zoom = 1.0f / eGFX_PHYSICAL_SCREEN_SIZE_X;
+    egfx_zoom = EGFX_IMGUI_INITIAL_ZOOM;
+    if (egfx_zoom < 1.0f) {
+        egfx_zoom = 1.0f / EGFX_PHYSICAL_SCREEN_SIZE_X;
     }
 #endif
 
@@ -190,22 +190,22 @@ void eGFX_InitDriver(egfx_vsync_callback_t VS) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
     // Create window with graphics context
-    eGFX_Window = glfwCreateWindow(
+    egfx_window = glfwCreateWindow(
 
-         eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE *1.5 ,
-         eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE *1.5,
+         EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE *1.5 ,
+         EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE *1.5,
 
         WindowTitle, NULL, NULL);
 
-    if (eGFX_Window == NULL)
+    if (egfx_window == NULL)
         return;
 
-    glfwMakeContextCurrent(eGFX_Window);
+    glfwMakeContextCurrent(egfx_window);
     glfwSwapInterval(1); // Enable vsync
 
-   if (eGFX_Window != NULL) {
+   if (egfx_window != NULL) {
         // Register scroll callback
-        glfwSetScrollCallback(eGFX_Window, scroll_callback);
+        glfwSetScrollCallback(egfx_window, scroll_callback);
     }
 
     // Setup Dear ImGui context
@@ -219,13 +219,13 @@ void eGFX_InitDriver(egfx_vsync_callback_t VS) {
 
     // Scale ImGui for high DPI displays
     float xscale, yscale;
-    glfwGetWindowContentScale(eGFX_Window, &xscale, &yscale);
+    glfwGetWindowContentScale(egfx_window, &xscale, &yscale);
     if (xscale > 1.0f) {
         io.FontGlobalScale = xscale;
     }
 
     // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(eGFX_Window, true);
+    ImGui_ImplGlfw_InitForOpenGL(egfx_window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     // Clear texture buffer
@@ -235,8 +235,8 @@ void eGFX_InitDriver(egfx_vsync_callback_t VS) {
 
     GL_CALL(glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture));
 
-    glGenTextures(1, &eGFX_TextureID);
-    glBindTexture(GL_TEXTURE_2D, eGFX_TextureID);
+    glGenTextures(1, &egfx_texture_id);
+    glBindTexture(GL_TEXTURE_2D, egfx_texture_id);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -244,15 +244,15 @@ void eGFX_InitDriver(egfx_vsync_callback_t VS) {
     glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 #endif
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-        eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE,
-        eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE,
+        EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE,
+        EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE,
         0, GL_RGBA, GL_UNSIGNED_BYTE, TextureBuffer);
 
 
     GL_CALL(glBindTexture(GL_TEXTURE_2D, last_texture));
 
 }
- void eGFX_Dump(eGFX_ImagePlane *Image) {
+ void egfx_dump(eGFX_ImagePlane *Image) {
     egfx_pixel_state PS;
     int r, g, b;
     uint32_t TexturePixelColor = 0;
@@ -261,16 +261,16 @@ void eGFX_InitDriver(egfx_vsync_callback_t VS) {
 
 
     // Clear texture buffer for grid mode
-    #if (eGFX_IMGUI_SIM_GRID == 1)
+    #if (EGFX_IMGUI_SIM_GRID == 1)
         egfx_box PixelBox;
         for (int k = 0; k < sizeof(TextureBuffer) / sizeof(uint32_t); k++) {
-            TextureBuffer[k] = eGFX_IMGUI_SIM_GRID_BACKGROUND_COLOR;
+            TextureBuffer[k] = EGFX_IMGUI_SIM_GRID_BACKGROUND_COLOR;
         }
     #endif
     
     // Process each pixel from the image plane
-    for (int y = 0; y < eGFX_PHYSICAL_SCREEN_SIZE_Y; y++) {
-        for (int x = 0; x < eGFX_PHYSICAL_SCREEN_SIZE_X; x++) {
+    for (int y = 0; y < EGFX_PHYSICAL_SCREEN_SIZE_Y; y++) {
+        for (int x = 0; x < EGFX_PHYSICAL_SCREEN_SIZE_X; x++) {
             PS = egfx_get_pixel(Image, x, y);
             
             // Convert pixel based on image type
@@ -295,14 +295,14 @@ void eGFX_InitDriver(egfx_vsync_callback_t VS) {
             }
             
             // Draw pixel to texture buffer
-            #if (eGFX_IMGUI_SIM_GRID == 1)
-                PixelBox.p1.x = eGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (x * (TEXTURE_BUFFER_PIXEL_SIZE));
-                PixelBox.p1.y = eGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (y * (TEXTURE_BUFFER_PIXEL_SIZE));
-                PixelBox.p2.x = PixelBox.p1.x + eGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
-                PixelBox.p2.y = PixelBox.p1.y + eGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
-                eGFX_DrawFilledBox(&TexturePlane, &PixelBox, TexturePixelColor);
+            #if (EGFX_IMGUI_SIM_GRID == 1)
+                PixelBox.p1.x = EGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (x * (TEXTURE_BUFFER_PIXEL_SIZE));
+                PixelBox.p1.y = EGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (y * (TEXTURE_BUFFER_PIXEL_SIZE));
+                PixelBox.p2.x = PixelBox.p1.x + EGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
+                PixelBox.p2.y = PixelBox.p1.y + EGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
+                egfx_draw_filled_box(&TexturePlane, &PixelBox, TexturePixelColor);
             #else
-                TextureBuffer[y * eGFX_PHYSICAL_SCREEN_SIZE_X + x] = TexturePixelColor;
+                TextureBuffer[y * EGFX_PHYSICAL_SCREEN_SIZE_X + x] = TexturePixelColor;
             #endif
         }
     }
@@ -315,30 +315,30 @@ void eGFX_InitDriver(egfx_vsync_callback_t VS) {
     // Create an ImGui window for the LCD simulation
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
 ImGui::SetNextWindowSize(ImVec2(
-    eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_Zoom + 20, // Add padding
-    eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_Zoom + 40  // Add padding for title bar, etc.
+    EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * egfx_zoom + 20, // Add padding
+    EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * egfx_zoom + 40  // Add padding for title bar, etc.
 ));
     
     ImGui::Begin("LCD Simulator", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
     
     // Update texture with our pixel data
-    glBindTexture(GL_TEXTURE_2D, eGFX_TextureID);
+    glBindTexture(GL_TEXTURE_2D, egfx_texture_id);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 
-                eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE ,
-                eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE,
+                EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE ,
+                EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE,
                 0, GL_RGBA, GL_UNSIGNED_BYTE, TextureBuffer);
     
     // Display the texture
     ImVec2 windowSize = ImGui::GetContentRegionAvail();
 
     ImVec2 imageSize(
-    eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_Zoom,
-    eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_Zoom
+    EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * egfx_zoom,
+    EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * egfx_zoom
 );
 
     //ImVec2 uv_min = ImVec2(0.0f, 0.0f);
    // ImVec2 uv_max = ImVec2(1.0f, 1.0f);
-    ImGui::Image((ImTextureID)(intptr_t)eGFX_TextureID, imageSize);// , uv_min, uv_max);
+    ImGui::Image((ImTextureID)(intptr_t)egfx_texture_id, imageSize);// , uv_min, uv_max);
     
 
     
@@ -347,13 +347,13 @@ ImGui::SetNextWindowSize(ImVec2(
     // Rendering
     ImGui::Render();
     int display_w, display_h;
-    glfwGetFramebufferSize(eGFX_Window, &display_w, &display_h);
+    glfwGetFramebufferSize(egfx_window, &display_w, &display_h);
     glViewport(0, 0, display_w, display_h);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     
-    glfwSwapBuffers(eGFX_Window);
+    glfwSwapBuffers(egfx_window);
     
     // Call vsync callback if provided
     if (VSyncCallback != NULL) {
@@ -362,6 +362,6 @@ ImGui::SetNextWindowSize(ImVec2(
 }
 
 
-void eGFX_SetBacklight(uint8_t BacklightValue) {
+void egfx_set_backlight(uint8_t BacklightValue) {
     // Implement if needed
 }

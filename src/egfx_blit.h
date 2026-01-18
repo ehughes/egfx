@@ -2,8 +2,8 @@
 extern "C" {
 #endif
 
-#ifndef eGFX_BLIT_H
-#define eGFX_BLIT_H
+#ifndef EGFX_BLIT_H
+#define EGFX_BLIT_H
 
 #include "egfx_color.h"
 
@@ -30,6 +30,15 @@ void EGFX_WEAK egfx_blit(const egfx_img *dest,
                          egfx_point destination_point);
 
 void EGFX_WEAK egfx_blit_ex(const egfx_blit_config *config);
+
+// Blit with fade - scales pixel values toward zero
+// fade: 0 = all black, 255 = full brightness
+// Works with grayscale formats (1BPP, 4BPP, 8BPP) - scales intensity
+// For color formats, scales each channel proportionally
+void EGFX_WEAK egfx_blit_faded(egfx_img *dest,
+                               const egfx_img *src,
+                               egfx_point position,
+                               uint8_t fade);
 
 #endif
 

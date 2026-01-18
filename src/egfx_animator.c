@@ -2,452 +2,447 @@
 #include "egfx_animator.h"
 #include "math.h"
 
-bool eGFX_AnimatorsAreComplete(egfx_animator_header * AnimatorList)
+bool egfx_animators_are_complete(egfx_animator_header *animator_list)
 {
-	bool RetVal = true;
-                
-		while (AnimatorList != NULL)
-		{
-			if (eGFX_AnimatorIsComplete(AnimatorList) == false)
-			{
-				RetVal = false;
-				break;
-			}
+	bool ret_val = true;
 
-			AnimatorList = ((egfx_animator_header *)(AnimatorList))->next;
-		}
-        
-        return RetVal;
-}
-
-
-bool eGFX_AnimatorIsComplete(egfx_animator_header * A)
-{
-	bool RetVal = false;
-
-        if(((egfx_animator_header *)(A))->state == EGFX_ANIMATOR_STATE_COMPLETE)
-        {
-                RetVal = true;
-        }
-
-        return RetVal;
-
-}
-
-void eGFX_PauseAnimator(egfx_animator_header * A)
-{
-        ((egfx_animator_header *)(A))->state = EGFX_OBJECT_STATE_INACTIVE;
-}
-
-void eGFX_StartAnimator(egfx_animator_header * A)
-{
-        (*((egfx_animator_header *)(A))).state = EGFX_OBJECT_STATE_ACTIVE;
-}
-
-
-void eGFX_PauseAnimators(egfx_animator_header * AnimatorList)
-{
-	while (AnimatorList != NULL)
+	while (animator_list != NULL)
 	{
-		eGFX_PauseAnimator(AnimatorList);
-		AnimatorList = ((egfx_animator_header *)(AnimatorList))->next;
+		if (egfx_animator_is_complete(animator_list) == false)
+		{
+			ret_val = false;
+			break;
+		}
+
+		animator_list = ((egfx_animator_header *)(animator_list))->next;
+	}
+
+	return ret_val;
+}
+
+
+bool egfx_animator_is_complete(egfx_animator_header *a)
+{
+	bool ret_val = false;
+
+	if (((egfx_animator_header *)(a))->state == EGFX_ANIMATOR_STATE_COMPLETE)
+	{
+		ret_val = true;
+	}
+
+	return ret_val;
+}
+
+void egfx_pause_animator(egfx_animator_header *a)
+{
+	((egfx_animator_header *)(a))->state = EGFX_OBJECT_STATE_INACTIVE;
+}
+
+void egfx_start_animator(egfx_animator_header *a)
+{
+	(*((egfx_animator_header *)(a))).state = EGFX_OBJECT_STATE_ACTIVE;
+}
+
+
+void egfx_pause_animators(egfx_animator_header *animator_list)
+{
+	while (animator_list != NULL)
+	{
+		egfx_pause_animator(animator_list);
+		animator_list = ((egfx_animator_header *)(animator_list))->next;
 	}
 }
 
-void eGFX_StartAnimators(egfx_animator_header * AnimatorList)
+void egfx_start_animators(egfx_animator_header *animator_list)
 {
-		while (AnimatorList != NULL)
-		{
-			eGFX_StartAnimator(AnimatorList);
-			AnimatorList = ((egfx_animator_header *)(AnimatorList))->next;
-		}
-}
-
-
-static void eGFX_AnimatorMarkComplete(egfx_animator_header* A)
-{
-
-	A->state = EGFX_ANIMATOR_STATE_COMPLETE;
-
-	if (A->complete != NULL)
+	while (animator_list != NULL)
 	{
-		A->complete(A->object_to_notify);
+		egfx_start_animator(animator_list);
+		animator_list = ((egfx_animator_header *)(animator_list))->next;
 	}
 }
 
 
-static void eGFX_InvalidateAnimatorObject(egfx_animator_header * A)
+static void egfx_animator_mark_complete(egfx_animator_header *a)
 {
-	if (A != NULL)
+	a->state = EGFX_ANIMATOR_STATE_COMPLETE;
+
+	if (a->complete != NULL)
 	{
-		if (A->invalidator != NULL)
+		a->complete(a->object_to_notify);
+	}
+}
+
+
+static void egfx_invalidate_animator_object(egfx_animator_header *a)
+{
+	if (a != NULL)
+	{
+		if (a->invalidator != NULL)
 		{
-			A->invalidator(A->object_to_invalidate);
+			a->invalidator(a->object_to_invalidate);
 		}
 	}
 }
 
-static void eGFX_InvalidateAllAnimatorObjects(egfx_animator_header * AnimatorList)
+static void egfx_invalidate_all_animator_objects(egfx_animator_header *animator_list)
 {
-	while (AnimatorList != NULL)
+	while (animator_list != NULL)
 	{
-		eGFX_InvalidateAnimatorObject(AnimatorList);
-		AnimatorList = ((egfx_animator_header *)(AnimatorList))->next;
+		egfx_invalidate_animator_object(animator_list);
+		animator_list = ((egfx_animator_header *)(animator_list))->next;
 	}
 }
 
-uint32_t eGFX_Animator_AddToList(egfx_animator_header * AnimatorList, egfx_animator_header *AnimatorToAdd)
+uint32_t egfx_animator_add_to_list(egfx_animator_header *animator_list, egfx_animator_header *animator_to_add)
 {
-	egfx_animator_header * LastObject = NULL;
-	uint32_t NumObjects = 0;
+	egfx_animator_header *last_object = NULL;
+	uint32_t num_objects = 0;
 
-	if (AnimatorList != NULL)
+	if (animator_list != NULL)
 	{
-		NumObjects = eGFX_GetAnimatorCount(AnimatorList, &LastObject);
+		num_objects = egfx_get_animator_count(animator_list, &last_object);
 
-		if ((LastObject != NULL) && (AnimatorToAdd != NULL))
+		if ((last_object != NULL) && (animator_to_add != NULL))
 		{
-			((egfx_animator_header *)LastObject)->next = AnimatorToAdd;
+			((egfx_animator_header *)last_object)->next = animator_to_add;
 
-			((egfx_animator_header *)AnimatorToAdd)->next = NULL;
+			((egfx_animator_header *)animator_to_add)->next = NULL;
 		}
 	}
 
-	return NumObjects;
+	return num_objects;
 }
 
-uint32_t eGFX_GetAnimatorCount(egfx_animator_header * Animator, egfx_animator_header **LastAnimator)
+uint32_t egfx_get_animator_count(egfx_animator_header *animator, egfx_animator_header **last_animator)
 {
-	uint32_t Count = 0;
+	uint32_t count = 0;
 
-	if (Animator != NULL)
+	if (animator != NULL)
 	{
-		Count = 1;
+		count = 1;
 		while (
-			(((egfx_object_header *)Animator)->next != NULL)
+			(((egfx_object_header *)animator)->next != NULL)
 			)
 		{
-			Animator = ((egfx_object_header *)Animator)->next;
-			Count++;
+			animator = ((egfx_object_header *)animator)->next;
+			count++;
 		}
 
-		*LastAnimator = Animator;
+		*last_animator = animator;
 	}
 
-	return Count;
+	return count;
 }
 
 
-bool eGFX_Animator_Process(egfx_animator_header* A)
+bool egfx_animator_process(egfx_animator_header *a)
 {
-	bool Processed = true;
+	bool processed = true;
 
-	if ((egfx_object_state)((egfx_animator_header*)(A))->state == (egfx_object_state)EGFX_OBJECT_STATE_ACTIVE)
+	if ((egfx_object_state)((egfx_animator_header *)(a))->state == (egfx_object_state)EGFX_OBJECT_STATE_ACTIVE)
 	{
-		switch (((egfx_animator_header*)(A))->type)
+		switch (((egfx_animator_header *)(a))->type)
 		{
 
 		case EGFX_ANIMATOR_POINT:
-			eGFX_Process_PointAnimator((egfx_point_animator*)A);
+			egfx_process_point_animator((egfx_point_animator *)a);
 			break;
 
 		case EGFX_ANIMATOR_SCALAR:
-			eGFX_Process_ScalarAnimator((egfx_scalar_animator*)A);
+			egfx_process_scalar_animator((egfx_scalar_animator *)a);
 			break;
 
 		default:
-			Processed = false;
+			processed = false;
 			break;
 		}
 	}
 	else
-	{ 
-		Processed = false;
+	{
+		processed = false;
 	}
 
-	return Processed;
+	return processed;
 }
 
-uint32_t eGFX_Animator_ProcessList(egfx_animator_header * AnimatorList)
+uint32_t egfx_animator_process_list(egfx_animator_header *animator_list)
 {
-	uint32_t ProcessedAnimators = 0;
-	egfx_animator_header * AnimatorStart = AnimatorList;
+	uint32_t processed_animators = 0;
+	egfx_animator_header *animator_start = animator_list;
 
 	//Process the list
-	while (AnimatorList != NULL)
+	while (animator_list != NULL)
 	{
-		if (eGFX_Animator_Process(AnimatorList))
+		if (egfx_animator_process(animator_list))
 		{
-			ProcessedAnimators++;
+			processed_animators++;
 		}
-		AnimatorList = ((egfx_object_header *)(AnimatorList))->next;
+		animator_list = ((egfx_object_header *)(animator_list))->next;
 	}
 
 	//We need to keep invalidating all animator objects until they are all done to avoid visual artifacts
-	AnimatorList = AnimatorStart;
-	if (eGFX_AnimatorsAreComplete(AnimatorList) == false)
+	animator_list = animator_start;
+	if (egfx_animators_are_complete(animator_list) == false)
 	{
-		eGFX_InvalidateAllAnimatorObjects(AnimatorList);
+		egfx_invalidate_all_animator_objects(animator_list);
 	}
 
-	return ProcessedAnimators;
+	return processed_animators;
 }
 
 //Initializes the data struct
-void eGFX_Init_PointAnimator(egfx_point_animator *A,
-							egfx_point Start,
-							egfx_point End,
-							egfx_point *Current, //Point this to the thing you want to animate
-							uint32_t LastFrame,      //Maximum allowed frames before forced convergence
-							egfx_pointf	 FractionToMove, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-							egfx_animator_mode Mode
+void egfx_init_point_animator(egfx_point_animator *a,
+							egfx_point start,
+							egfx_point end,
+							egfx_point *current, //Point this to the thing you want to animate
+							uint32_t last_frame,      //Maximum allowed frames before forced convergence
+							egfx_pointf fraction_to_move, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
+							egfx_animator_mode mode
 						)
 {
-	if (A != NULL)
+	if (a != NULL)
 	{
-		A->header.type = EGFX_ANIMATOR_POINT;
-		A->header.state = EGFX_ANIMATOR_STATE_INACTIVE;
-		A->start = Start;
-		A->end = End;
+		a->header.type = EGFX_ANIMATOR_POINT;
+		a->header.state = EGFX_ANIMATOR_STATE_INACTIVE;
+		a->start = start;
+		a->end = end;
 
-		A->__frac.x = (float)A->start.x;
-		A->__frac.y = (float)A->start.y;
-		A->current = Current;
+		a->__frac.x = (float)a->start.x;
+		a->__frac.y = (float)a->start.y;
+		a->current = current;
 
-		if (Current != NULL)
+		if (current != NULL)
 		{
-			*(A->current) = A->start;
+			*(a->current) = a->start;
 		}
 
-		A->last_frame = LastFrame;
+		a->last_frame = last_frame;
 
-		A->mode = Mode;
+		a->mode = mode;
 
-		A->current_frame = 0;
+		a->current_frame = 0;
 
-		if (A->mode == EGFX_ANIMATOR_MODE__LINEAR)
+		if (a->mode == EGFX_ANIMATOR_MODE__LINEAR)
 		{
-			A->fraction_to_move.x = ((float)A->end.x - (float)A->start.x) * FractionToMove.x;
-			A->fraction_to_move.y = ((float)A->end.y - (float)A->start.y) * FractionToMove.y;
+			a->fraction_to_move.x = ((float)a->end.x - (float)a->start.x) * fraction_to_move.x;
+			a->fraction_to_move.y = ((float)a->end.y - (float)a->start.y) * fraction_to_move.y;
 		}
 		else
 		{
-			A->fraction_to_move = FractionToMove;
+			a->fraction_to_move = fraction_to_move;
 		}
 
-		eGFX_InvalidateAnimatorObject((egfx_animator_header *)A);
+		egfx_invalidate_animator_object((egfx_animator_header *)a);
 	}
 }
 
-void eGFX_Init_ScalarAnimator(egfx_scalar_animator *A,
-	int32_t Start,
-	int32_t End,
-	int32_t *Current, //Point this to the thing you want to animate
-	uint32_t LastFrame,      //Maximum allowed frames before forced convergence
-	float	 FractionToMove, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-	egfx_animator_mode Mode
+void egfx_init_scalar_animator(egfx_scalar_animator *a,
+	int32_t start,
+	int32_t end,
+	int32_t *current, //Point this to the thing you want to animate
+	uint32_t last_frame,      //Maximum allowed frames before forced convergence
+	float fraction_to_move, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
+	egfx_animator_mode mode
 )
 {
-	if (A != NULL)
+	if (a != NULL)
 	{
-		A->header.type = EGFX_ANIMATOR_SCALAR;
-		A->header.state = EGFX_ANIMATOR_STATE_INACTIVE;
-		A->start = Start;
-		A->end = End;
+		a->header.type = EGFX_ANIMATOR_SCALAR;
+		a->header.state = EGFX_ANIMATOR_STATE_INACTIVE;
+		a->start = start;
+		a->end = end;
 
-		A->__frac = (float)A->start;
-	
-		A->current = Current;
+		a->__frac = (float)a->start;
 
-		if (Current != NULL)
+		a->current = current;
+
+		if (current != NULL)
 		{
-			*(A->current) = A->start;
+			*(a->current) = a->start;
 		}
 
-		A->last_frame = LastFrame;
-				
-		A->mode = Mode;
+		a->last_frame = last_frame;
 
-		A->current_frame = 0;
+		a->mode = mode;
 
-		if (A->mode == EGFX_ANIMATOR_MODE__LINEAR)
+		a->current_frame = 0;
+
+		if (a->mode == EGFX_ANIMATOR_MODE__LINEAR)
 		{
-			A->fraction_to_move = ((float)A->end - (float)A->start) * FractionToMove;
+			a->fraction_to_move = ((float)a->end - (float)a->start) * fraction_to_move;
 		}
 		else
 		{
-			A->fraction_to_move = FractionToMove;
+			a->fraction_to_move = fraction_to_move;
 		}
 
-		eGFX_InvalidateAnimatorObject((egfx_animator_header*)A);
+		egfx_invalidate_animator_object((egfx_animator_header *)a);
 	}
 }
 
 
-void eGFX_Process_PointAnimator(egfx_point_animator *A)
+void egfx_process_point_animator(egfx_point_animator *a)
 {
-
-        if (A == NULL)
-                return;
-
-        if (A->header.state == EGFX_ANIMATOR_STATE_ACTIVE)
-        {
-                //Move a fraction of a distance towards the target
-				
-			if (A->mode == EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT)
-			{
-				A->__frac.x += ((float)A->end.x - A->__frac.x) * A->fraction_to_move.x;
-				A->__frac.y += ((float)A->end.y - A->__frac.y) * A->fraction_to_move.y;
-
-				float dist_y = fabs((float)(A->end.y) - (float)(A->__frac.y));
-				float dist_x = fabs((float)(A->end.x) - (float)(A->__frac.x));
-
-				//See if we have converged or beyond the max number of steps
-				if (
-						(A->current_frame >= A->last_frame) ||
-						(
-							(dist_y < 0.5f) &&
-							(dist_x < 0.5f)
-						)
-				  )
-					
-				{
-					*(A->current) = A->end;
-					
-					eGFX_AnimatorMarkComplete(&(A->header));
-				}
-				else
-				{
-					(*(A->current)).x = (int32_t)A->__frac.x;
-					(*(A->current)).y = (int32_t)A->__frac.y;
-				}
-
-			}
-			else
-			{
-
-				bool X_Done = false;
-				bool Y_Done = false;
-
-				//See if we have converged or beyond the max number of steps
-				if ((A->current_frame >= A->last_frame))
-				{
-					*(A->current) = A->end;
-
-					X_Done = true;
-					Y_Done = true;
-				
-				}
-				else
-				{
-
-					if ((fabs((float)(A->end.x) - (float)(A->__frac.x)) >= fabs(A->fraction_to_move.x)))
-					{
-						A->__frac.x += A->fraction_to_move.x;
-
-						X_Done = false;
-					}
-					else
-					{
-						X_Done = true;
-					}
-
-					if ((fabs((float)(A->end.y) - (float)(A->__frac.y)) >= fabs(A->fraction_to_move.y)))
-					{
-						A->__frac.y += A->fraction_to_move.y;
-						Y_Done = false;
-					}
-					else
-					{
-						Y_Done = true;
-					}
-				}
-				
-				if ((X_Done == true) && (Y_Done == true))
-				{
-					*(A->current) = A->end;
-					eGFX_AnimatorMarkComplete(&(A->header));
-				}
-				else
-				{
-					(*(A->current)).x = (int32_t)A->__frac.x;
-					(*(A->current)).y = (int32_t)A->__frac.y;
-				}
-
-
-			}
-
-
-            A->current_frame++;
-			
-    		//the linked object will get invalidated in the process routine
-        }
-}
-
-
-void eGFX_Process_ScalarAnimator(egfx_scalar_animator *A)
-{
-
-	if (A == NULL)
+	if (a == NULL)
 		return;
 
-	if (A->header.state == EGFX_ANIMATOR_STATE_ACTIVE)
+	if (a->header.state == EGFX_ANIMATOR_STATE_ACTIVE)
 	{
 		//Move a fraction of a distance towards the target
 
-		if (A->mode == EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT)
+		if (a->mode == EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT)
 		{
-			A->__frac += ((float)A->end - A->__frac) * A->fraction_to_move;
+			a->__frac.x += ((float)a->end.x - a->__frac.x) * a->fraction_to_move.x;
+			a->__frac.y += ((float)a->end.y - a->__frac.y) * a->fraction_to_move.y;
+
+			float dist_y = fabs((float)(a->end.y) - (float)(a->__frac.y));
+			float dist_x = fabs((float)(a->end.x) - (float)(a->__frac.x));
 
 			//See if we have converged or beyond the max number of steps
-			if ((A->current_frame >= A->last_frame) ||
-				((fabs((float)(A->end) - (float)(A->__frac)) <= 0.5)))
+			if (
+					(a->current_frame >= a->last_frame) ||
+					(
+						(dist_y < 0.5f) &&
+						(dist_x < 0.5f)
+					)
+			  )
+
 			{
-				*(A->current) = A->end;
-				eGFX_AnimatorMarkComplete(&(A->header));
+				*(a->current) = a->end;
+
+				egfx_animator_mark_complete(&(a->header));
 			}
 			else
 			{
-				*(A->current) = (int32_t)A->__frac;
+				(*(a->current)).x = (int32_t)a->__frac.x;
+				(*(a->current)).y = (int32_t)a->__frac.y;
 			}
 
 		}
 		else
 		{
-			bool Done = false;
+			bool x_done = false;
+			bool y_done = false;
 
 			//See if we have converged or beyond the max number of steps
-			if ((A->current_frame >= A->last_frame))
+			if ((a->current_frame >= a->last_frame))
 			{
-				*(A->current) = A->end;
-				Done = true;
+				*(a->current) = a->end;
+
+				x_done = true;
+				y_done = true;
+
+			}
+			else
+			{
+
+				if ((fabs((float)(a->end.x) - (float)(a->__frac.x)) >= fabs(a->fraction_to_move.x)))
+				{
+					a->__frac.x += a->fraction_to_move.x;
+
+					x_done = false;
+				}
+				else
+				{
+					x_done = true;
+				}
+
+				if ((fabs((float)(a->end.y) - (float)(a->__frac.y)) >= fabs(a->fraction_to_move.y)))
+				{
+					a->__frac.y += a->fraction_to_move.y;
+					y_done = false;
+				}
+				else
+				{
+					y_done = true;
+				}
+			}
+
+			if ((x_done == true) && (y_done == true))
+			{
+				*(a->current) = a->end;
+				egfx_animator_mark_complete(&(a->header));
+			}
+			else
+			{
+				(*(a->current)).x = (int32_t)a->__frac.x;
+				(*(a->current)).y = (int32_t)a->__frac.y;
+			}
+
+
+		}
+
+
+		a->current_frame++;
+
+		//the linked object will get invalidated in the process routine
+	}
+}
+
+
+void egfx_process_scalar_animator(egfx_scalar_animator *a)
+{
+	if (a == NULL)
+		return;
+
+	if (a->header.state == EGFX_ANIMATOR_STATE_ACTIVE)
+	{
+		//Move a fraction of a distance towards the target
+
+		if (a->mode == EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT)
+		{
+			a->__frac += ((float)a->end - a->__frac) * a->fraction_to_move;
+
+			//See if we have converged or beyond the max number of steps
+			if ((a->current_frame >= a->last_frame) ||
+				((fabs((float)(a->end) - (float)(a->__frac)) <= 0.5)))
+			{
+				*(a->current) = a->end;
+				egfx_animator_mark_complete(&(a->header));
+			}
+			else
+			{
+				*(a->current) = (int32_t)a->__frac;
+			}
+
+		}
+		else
+		{
+			bool done = false;
+
+			//See if we have converged or beyond the max number of steps
+			if ((a->current_frame >= a->last_frame))
+			{
+				*(a->current) = a->end;
+				done = true;
 			}
 			else
 			{
 				//Check for convergence
-				if ((fabs((float)(A->end) - (float)(A->__frac)) >= fabs(A->fraction_to_move)))
+				if ((fabs((float)(a->end) - (float)(a->__frac)) >= fabs(a->fraction_to_move)))
 				{
-					A->__frac += A->fraction_to_move;
-					Done = false;
+					a->__frac += a->fraction_to_move;
+					done = false;
 				}
 				else
 				{
-					Done = true;
+					done = true;
 				}
 			}
 
-			if (Done == true)
+			if (done == true)
 			{
-				*(A->current) = A->end;
-				eGFX_AnimatorMarkComplete(&(A->header));
+				*(a->current) = a->end;
+				egfx_animator_mark_complete(&(a->header));
 			}
 			else
 			{
-				*(A->current) = (int32_t)A->__frac;
+				*(a->current) = (int32_t)a->__frac;
 			}
 		}
 
-		A->current_frame++;
+		a->current_frame++;
 
 		//the linked object will get invalidated in the process routine
 	}

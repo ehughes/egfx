@@ -2,8 +2,8 @@
 #include "stdbool.h"
 #include "egfx_color.h"
 
-#ifndef eGFX_DATA_TYPES_H
-#define eGFX_DATA_TYPES_H
+#ifndef EGFX_TYPES_H
+#define EGFX_TYPES_H
 
 #ifndef  NULL
   #define NULL 0

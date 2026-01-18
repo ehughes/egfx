@@ -3,11 +3,11 @@
 extern "C" {
 #endif
 
-#ifndef _eGFX_H__
-#define _eGFX_H__
+#ifndef EGFX_H
+#define EGFX_H
 
-#define eGFX_API_LEVEL             2
-#define eGFX_REVISION              0
+#define EGFX_API_LEVEL             2
+#define EGFX_REVISION              0
 
 #include "egfx_config.h"
 

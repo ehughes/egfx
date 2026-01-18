@@ -11,7 +11,7 @@
     The window used to render the simulated display can be enlarged for small screens, etc
     This is the default zoom level
 */
-#define EGFX_IMGUI_INITIAL_ZOOM  (1)
+#define EGFX_IMGUI_INITIAL_ZOOM  (4)
 
 /*
     For smaller matrix LED displays, OLEDs, etc there can be a small gap between pixels.
@@ -19,7 +19,7 @@
 
     Note that the zoom level gets applied to this. The actual space used by each pixel is PIXEL_SIZE + 2*EGFX_IMGUI_SIM_GRID_PIXEL_BORDER
 */
-#define EGFX_IMGUI_SIM_GRID      (1)
+#define EGFX_IMGUI_SIM_GRID      (0)
 
 #if EGFX_IMGUI_SIM_GRID == 1
     #define EGFX_IMGUI_SIM_GRID_PIXEL_SIZE        (4)
@@ -34,10 +34,10 @@
 */
 #define EGFX_DISPLAY_DRIVER_PRESENT
 
-#define EGFX_DISPLAY_DRIVER_IMG_TYPE   EGFX_IMG_4BPP
+#define EGFX_DISPLAY_DRIVER_IMG_TYPE   EGFX_IMG_16BPP_RGB565
 
-#define EGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 256)
-#define EGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 64)
+#define EGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 160)
+#define EGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 80)
 
 /*
     egfx_init_driver() should do any hardware related init for the display and

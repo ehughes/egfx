@@ -38,13 +38,13 @@ void Activity__Sprite_Enter(uint32_t MessageID, void *Message)
 	
 	SpriteTestActiveBuffer = 0;
 
-	ForegroundImage = &eGFX_BackBuffer[SpriteTestActiveBuffer];
+	ForegroundImage = &egfx_back_buffer[SpriteTestActiveBuffer];
 	
 	if (Message != NULL)
 	{
-		for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++)
+		for (int i = 0; i < EGFX_NUM_BACKBUFFERS; i++)
 		{
-			egfx_blit(&eGFX_BackBuffer[i], BackgroundImage, (egfx_point){0, 0});
+			egfx_blit(&egfx_back_buffer[i], BackgroundImage, (egfx_point){0, 0});
 		}
 	}
 	else
@@ -53,12 +53,12 @@ void Activity__Sprite_Enter(uint32_t MessageID, void *Message)
 
 		R.P1.X = 0;
 		R.P1.Y = 0;
-		R.P2.X = eGFX_PHYSICAL_SCREEN_SIZE_X - 1;
-		R.P2.Y = eGFX_PHYSICAL_SCREEN_SIZE_Y - 1;
+		R.P2.X = EGFX_PHYSICAL_SCREEN_SIZE_X - 1;
+		R.P2.Y = EGFX_PHYSICAL_SCREEN_SIZE_Y - 1;
 
-		for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++)
+		for (int i = 0; i < EGFX_NUM_BACKBUFFERS; i++)
 		{
-			eGFX_DrawSolidRectangle(&eGFX_BackBuffer[i], &R, BackgroundColor);
+			egfx_draw_solid_rectangle(&egfx_back_buffer[i], &R, BackgroundColor);
 		}
 	}
 	
@@ -71,7 +71,7 @@ void Activity__Sprite_Enter(uint32_t MessageID, void *Message)
 		Sprite[i].TransparentColor = 0;
 		Sprite[i].RenderOption = 1;
 
-		if (eGFX_NUM_BACKBUFFERS == 2)
+		if (EGFX_NUM_BACKBUFFERS == 2)
 			Sprite[i].DoubleBuffered = true;
 		else
 			Sprite[i].DoubleBuffered = false;
@@ -98,7 +98,7 @@ void Activity__Sprite_Enter(uint32_t MessageID, void *Message)
 
 
 
-		eGFX_Init_PointAnimator(&PointAnim[i],
+		egfx_init_point_animator(&PointAnim[i],
 			Sprite[i].Position,
 			(egfx_point) {
 			200, 60 + i * 60
@@ -113,15 +113,15 @@ void Activity__Sprite_Enter(uint32_t MessageID, void *Message)
 					);
 
 		if (i != 0)
-			eGFX_AddAnimator(AnimatorList, &PointAnim[i]);
+			egfx_animator_add_to_list(AnimatorList, &PointAnim[i]);
 
 	}
 	Sprite[0].Sprite = &Sprite_16BPP_RGB565_Menu1;
 	Sprite[1].Sprite = &Sprite_16BPP_RGB565_Menu2;
 	Sprite[2].Sprite = &Sprite_16BPP_RGB565_Menu3;
 
-	eGFX_StartAnimators(AnimatorList);
-	eGFX_Dump(&eGFX_BackBuffer[SpriteTestActiveBuffer]);
+	egfx_start_animators(AnimatorList);
+	egfx_dump(&egfx_back_buffer[SpriteTestActiveBuffer]);
 	switch (MessageID)
 	{
 		//System Messages...   Do nothing if you don't need the behavior
@@ -151,7 +151,7 @@ void Activity__Sprite_Enter(uint32_t MessageID, void *Message)
 void Activity__Sprite_Process()
 {
 	
-	if (eGFX_NUM_BACKBUFFERS == 2)
+	if (EGFX_NUM_BACKBUFFERS == 2)
 	{
 		SpriteTestActiveBuffer++;
 
@@ -162,11 +162,11 @@ void Activity__Sprite_Process()
 		SpriteTestActiveBuffer = 0;
 	}
 	
-	ForegroundImage = &eGFX_BackBuffer[SpriteTestActiveBuffer];
+	ForegroundImage = &egfx_back_buffer[SpriteTestActiveBuffer];
 	
-    eGFX_ProcessAnimators(AnimatorList);
+    egfx_animator_process_list(AnimatorList);
 
-	if (eGFX_AnimatorsAreComplete(AnimatorList) == eGFX_TRUE)
+	if (egfx_animators_are_complete(AnimatorList) == eGFX_TRUE)
 	{
 		AnimPhase++;
 		AnimPhase &= 0x1;
@@ -185,7 +185,7 @@ void Activity__Sprite_Process()
 				 TargetX = 240;
 				 TargetY = Sprite[i].Position.Y;
 			}
-			eGFX_Init_PointAnimator(&PointAnim[i],
+			egfx_init_point_animator(&PointAnim[i],
 				Sprite[i].Position,
 				(egfx_point) {
 				TargetX, TargetY
@@ -200,10 +200,10 @@ void Activity__Sprite_Process()
 						);
 
 			if (i != 0)
-				eGFX_AddAnimator(AnimatorList, &PointAnim[i]);
+				egfx_animator_add_to_list(AnimatorList, &PointAnim[i]);
 
 
-			eGFX_StartAnimators(AnimatorList);
+			egfx_start_animators(AnimatorList);
 		}
 	}
 	
@@ -213,7 +213,7 @@ void Activity__Sprite_Process()
 		
 	eGFX_WaitForV_Sync();
 	
-	eGFX_Dump(&eGFX_BackBuffer[SpriteTestActiveBuffer]);
+	egfx_dump(&egfx_back_buffer[SpriteTestActiveBuffer]);
 
 
 	return;

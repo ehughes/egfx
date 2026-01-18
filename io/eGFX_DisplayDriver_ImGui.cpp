@@ -25,8 +25,8 @@
 #include <string.h>
 #include <algorithm> // For std::min and std::max
 
-#if eGFX_IMGUI_SIM_GRID == 1
-#define TEXTURE_BUFFER_PIXEL_SIZE (eGFX_IMGUI_SIM_GRID_PIXEL_SIZE + (eGFX_IMGUI_SIM_GRID_PIXEL_BORDER*2))
+#if EGFX_IMGUI_SIM_GRID == 1
+#define TEXTURE_BUFFER_PIXEL_SIZE (EGFX_IMGUI_SIM_GRID_PIXEL_SIZE + (EGFX_IMGUI_SIM_GRID_PIXEL_BORDER*2))
 #else
 #define TEXTURE_BUFFER_PIXEL_SIZE 1
 #endif
@@ -34,27 +34,27 @@
 // Texture buffer for our simulated LCD
 // Using static constructor macro to create the texture plane with its storage
 EGFX_IMG_MAKE(TexturePlane,
-              eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE,
-              eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE,
+              EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE,
+              EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE,
               EGFX_IMG_32BPP_XRGB888);
 
 // SDL and ImGui globals
-SDL_Window* eGFX_Window = nullptr;
-SDL_Renderer* eGFX_Renderer = nullptr;
-SDL_Texture* eGFX_Texture = nullptr;
-float eGFX_Zoom = 1.0f;
-bool eGFX_ShouldClose = false;
+SDL_Window* egfx_window = nullptr;
+SDL_Renderer* egfx_renderer = nullptr;
+SDL_Texture* egfx_texture = nullptr;
+float egfx_zoom = 1.0f;
+bool egfx_should_close = false;
 char WindowTitle[64];
 
 // Create backbuffers using static constructor macro
-#if eGFX_NUM_BACKBUFFERS == 2
-EGFX_IMG_MAKE(eGFX_BackBuffer_0, eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y, eGFX_DISPLAY_DRIVER_IMG_TYPE);
-EGFX_IMG_MAKE(eGFX_BackBuffer_1, eGFX_PHYSICAL_SCREEN_SIZE_X, eGFX_PHYSICAL_SCREEN_SIZE_Y, eGFX_DISPLAY_DRIVER_IMG_TYPE);
+#if EGFX_NUM_BACKBUFFERS == 2
+EGFX_IMG_MAKE(egfx_back_buffer_0, EGFX_PHYSICAL_SCREEN_SIZE_X, EGFX_PHYSICAL_SCREEN_SIZE_Y, EGFX_DISPLAY_DRIVER_IMG_TYPE);
+EGFX_IMG_MAKE(egfx_back_buffer_1, EGFX_PHYSICAL_SCREEN_SIZE_X, EGFX_PHYSICAL_SCREEN_SIZE_Y, EGFX_DISPLAY_DRIVER_IMG_TYPE);
 
 // Array of pointers to backbuffers for compatibility
-egfx_img* eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS] = {
-    &eGFX_BackBuffer_0,
-    &eGFX_BackBuffer_1
+egfx_img* egfx_back_buffer[EGFX_NUM_BACKBUFFERS] = {
+    &egfx_back_buffer_0,
+    &egfx_back_buffer_1
 };
 #else
 #error "Only 2 backbuffers are currently supported with static initialization"
@@ -68,89 +68,89 @@ bool zoomChanged = false;
 
 void UpdateWindowTitle() {
     snprintf(WindowTitle, sizeof(WindowTitle), "%d x %d  Zoom:%.1f %dBPP",
-              eGFX_PHYSICAL_SCREEN_SIZE_X, 
-              eGFX_PHYSICAL_SCREEN_SIZE_Y,
-              eGFX_Zoom,
-              EGFX_IMG_BPP_FROM_TYPE(eGFX_DISPLAY_DRIVER_IMG_TYPE)
+              EGFX_PHYSICAL_SCREEN_SIZE_X,
+              EGFX_PHYSICAL_SCREEN_SIZE_Y,
+              egfx_zoom,
+              EGFX_IMG_BPP_FROM_TYPE(EGFX_DISPLAY_DRIVER_IMG_TYPE)
     );
-    
-    if (eGFX_Window) {
-        SDL_SetWindowTitle(eGFX_Window, WindowTitle);
+
+    if (egfx_window) {
+        SDL_SetWindowTitle(egfx_window, WindowTitle);
     }
 }
 
-uint32_t eGFX_GetInactiveBackBuffer() {
+uint32_t egfx_get_inactive_back_buffer() {
     return InactiveBackBuffer++;
 }
 
 // Process SDL events
 int ProcessSimEvents() {
     SDL_Event event;
-    
+
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL2_ProcessEvent(&event);
-        
+
         if (event.type == SDL_QUIT) {
             return -1;
         }
-        
+
         // Handle mouse wheel zoom
         if (event.type == SDL_MOUSEWHEEL) {
             if (event.wheel.y > 0) {
-                eGFX_Zoom = std::min(4.0f, eGFX_Zoom + 0.25f); // Increment by 0.25, max at 4
+                egfx_zoom = std::min(4.0f, egfx_zoom + 0.25f); // Increment by 0.25, max at 4
             } else if (event.wheel.y < 0) {
-                eGFX_Zoom = std::max(1.0f, eGFX_Zoom - 0.25f);  // Decrement by 0.25, min at 1
+                egfx_zoom = std::max(1.0f, egfx_zoom - 0.25f);  // Decrement by 0.25, min at 1
             }
-            
+
             // Mark that zoom changed
             zoomChanged = true;
-            
+
             // Update the window title with the new zoom value
             UpdateWindowTitle();
         }
     }
-    
+
     return 0;
 }
 
-void eGFX_DeInitDriver() {
+void egfx_deinit_driver() {
     // Clean up ImGui and SDL
     ImGui_ImplSDLRenderer2_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
-    
-    if (eGFX_Texture) {
-        SDL_DestroyTexture(eGFX_Texture);
-        eGFX_Texture = nullptr;
+
+    if (egfx_texture) {
+        SDL_DestroyTexture(egfx_texture);
+        egfx_texture = nullptr;
     }
-    
-    if (eGFX_Renderer) {
-        SDL_DestroyRenderer(eGFX_Renderer);
-        eGFX_Renderer = nullptr;
+
+    if (egfx_renderer) {
+        SDL_DestroyRenderer(egfx_renderer);
+        egfx_renderer = nullptr;
     }
-    
-    if (eGFX_Window) {
-        SDL_DestroyWindow(eGFX_Window);
-        eGFX_Window = nullptr;
+
+    if (egfx_window) {
+        SDL_DestroyWindow(egfx_window);
+        egfx_window = nullptr;
     }
-    
+
     SDL_Quit();
 }
 
-void eGFX_InitDriver(egfx_vsync_callback_t VS) {
+void egfx_init_driver(egfx_vsync_callback_t VS) {
     VSyncCallback = VS;
 
     // Clear back buffers (already statically initialized)
-    memset(eGFX_BackBuffer_0_storage, 0, sizeof(eGFX_BackBuffer_0_storage));
-    memset(eGFX_BackBuffer_1_storage, 0, sizeof(eGFX_BackBuffer_1_storage));
+    memset(egfx_back_buffer_0_storage, 0, sizeof(egfx_back_buffer_0_storage));
+    memset(egfx_back_buffer_1_storage, 0, sizeof(egfx_back_buffer_1_storage));
 
     // Set initial zoom
-#ifndef eGFX_IMGUI_INITIAL_ZOOM
-    eGFX_Zoom = 640.0f / eGFX_PHYSICAL_SCREEN_SIZE_X;
+#ifndef EGFX_IMGUI_INITIAL_ZOOM
+    egfx_zoom = 640.0f / EGFX_PHYSICAL_SCREEN_SIZE_X;
 #else
-    eGFX_Zoom = eGFX_IMGUI_INITIAL_ZOOM;
-    if (eGFX_Zoom < 1.0f) {
-        eGFX_Zoom = 1.0f / eGFX_PHYSICAL_SCREEN_SIZE_X;
+    egfx_zoom = EGFX_IMGUI_INITIAL_ZOOM;
+    if (egfx_zoom < 1.0f) {
+        egfx_zoom = 1.0f / EGFX_PHYSICAL_SCREEN_SIZE_X;
     }
 #endif
 
@@ -164,23 +164,23 @@ void eGFX_InitDriver(egfx_vsync_callback_t VS) {
     }
 
     // Create window with SDL
-    int window_width = eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_IMGUI_INITIAL_ZOOM * 1.5;
-    int window_height = eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_IMGUI_INITIAL_ZOOM * 1.5;
-    
+    int window_width = EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * EGFX_IMGUI_INITIAL_ZOOM * 1.5;
+    int window_height = EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * EGFX_IMGUI_INITIAL_ZOOM * 1.5;
+
     // Simple window setup without dark mode hints
-    
+
     SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_RESIZABLE);// | SDL_WINDOW_ALLOW_HIGHDPI);
-    eGFX_Window = SDL_CreateWindow(WindowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
+    egfx_window = SDL_CreateWindow(WindowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                    window_width, window_height, window_flags);
-    
-    if (eGFX_Window == nullptr) {
+
+    if (egfx_window == nullptr) {
         printf("Error creating window: %s\n", SDL_GetError());
         return;
     }
 
     // Create renderer
-    eGFX_Renderer = SDL_CreateRenderer(eGFX_Window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
-    if (eGFX_Renderer == nullptr) {
+    egfx_renderer = SDL_CreateRenderer(egfx_window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+    if (egfx_renderer == nullptr) {
         printf("Error creating renderer: %s\n", SDL_GetError());
         return;
     }
@@ -195,46 +195,46 @@ void eGFX_InitDriver(egfx_vsync_callback_t VS) {
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
-    ImGui_ImplSDL2_InitForSDLRenderer(eGFX_Window, eGFX_Renderer);
-    ImGui_ImplSDLRenderer2_Init(eGFX_Renderer);
+    ImGui_ImplSDL2_InitForSDLRenderer(egfx_window, egfx_renderer);
+    ImGui_ImplSDLRenderer2_Init(egfx_renderer);
 
     // Clear texture buffer
     memset(TexturePlane_storage, 0, sizeof(TexturePlane_storage));
 
     // Create texture for LCD
-    eGFX_Texture = SDL_CreateTexture(
-        eGFX_Renderer,
+    egfx_texture = SDL_CreateTexture(
+        egfx_renderer,
         SDL_PIXELFORMAT_RGBA32,
         SDL_TEXTUREACCESS_STREAMING,
-        eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE,
-        eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE
+        EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE,
+        EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE
     );
 
-    if (eGFX_Texture == nullptr) {
+    if (egfx_texture == nullptr) {
         printf("Error creating texture: %s\n", SDL_GetError());
         return;
     }
 }
 
-void eGFX_Dump(egfx_img *Image) 
+void egfx_dump(egfx_img *Image)
 {
     egfx_pixel_state PS;
     int r, g, b;
     uint32_t TexturePixelColor = 0;
-    
+
     // Clear texture buffer for grid mode
-    #if (eGFX_IMGUI_SIM_GRID == 1)
+    #if (EGFX_IMGUI_SIM_GRID == 1)
         egfx_box PixelBox;
         uint32_t* TextureBuffer = (uint32_t*)TexturePlane_storage;
         for (int k = 0; k < sizeof(TexturePlane_storage) / sizeof(uint32_t); k++) {
-            TextureBuffer[k] = eGFX_IMGUI_SIM_GRID_BACKGROUND_COLOR;
+            TextureBuffer[k] = EGFX_IMGUI_SIM_GRID_BACKGROUND_COLOR;
         }
     #endif
-    
+
     // Process each pixel from the image plane
     // Use raw pixel access (no transformations) since we're reading physical memory layout
-    for (int y = 0; y < eGFX_PHYSICAL_SCREEN_SIZE_Y; y++) {
-        for (int x = 0; x < eGFX_PHYSICAL_SCREEN_SIZE_X; x++) {
+    for (int y = 0; y < EGFX_PHYSICAL_SCREEN_SIZE_Y; y++) {
+        for (int x = 0; x < EGFX_PHYSICAL_SCREEN_SIZE_X; x++) {
             // Read pixel directly from physical memory (bypass all transformations)
             switch (EGFX_GET_BPP_FROM_IMG(Image)) {
                 case 1:
@@ -392,73 +392,73 @@ void eGFX_Dump(egfx_img *Image)
 
 
             // Draw pixel to texture buffer
-            #if (eGFX_IMGUI_SIM_GRID == 1)
-                PixelBox.p1.x = eGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (x * (TEXTURE_BUFFER_PIXEL_SIZE));
-                PixelBox.p1.y = eGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (y * (TEXTURE_BUFFER_PIXEL_SIZE));
-                PixelBox.p2.x = PixelBox.p1.x + eGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
-                PixelBox.p2.y = PixelBox.p1.y + eGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
-                eGFX_DrawFilledBox(&TexturePlane, &PixelBox, TexturePixelColor);
+            #if (EGFX_IMGUI_SIM_GRID == 1)
+                PixelBox.p1.x = EGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (x * (TEXTURE_BUFFER_PIXEL_SIZE));
+                PixelBox.p1.y = EGFX_IMGUI_SIM_GRID_PIXEL_BORDER + (y * (TEXTURE_BUFFER_PIXEL_SIZE));
+                PixelBox.p2.x = PixelBox.p1.x + EGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
+                PixelBox.p2.y = PixelBox.p1.y + EGFX_IMGUI_SIM_GRID_PIXEL_SIZE;
+                egfx_draw_filled_box(&TexturePlane, &PixelBox, TexturePixelColor);
             #else
-                ((uint32_t*)TexturePlane_storage)[y * eGFX_PHYSICAL_SCREEN_SIZE_X + x] = TexturePixelColor;
+                ((uint32_t*)TexturePlane_storage)[y * EGFX_PHYSICAL_SCREEN_SIZE_X + x] = TexturePixelColor;
             #endif
         }
     }
-    
+
     // Process events
     ProcessSimEvents();
-    
+
     // Start the ImGui frame
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
-    
+
     // Create an ImGui window for the LCD simulation
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(
-        eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_Zoom + 20, // Add padding
-        eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_Zoom + 40  // Add padding for title bar, etc.
+        EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * egfx_zoom + 20, // Add padding
+        EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * egfx_zoom + 40  // Add padding for title bar, etc.
     ));
-    
+
     ImGui::Begin("LCD Simulator", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
-    
+
     // Update texture with our pixel data
     SDL_UpdateTexture(
-        eGFX_Texture,
+        egfx_texture,
         NULL,
         TexturePlane_storage,
-        eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * sizeof(uint32_t)
+        EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * sizeof(uint32_t)
     );
-    
+
     // Calculate texture dimensions for display
     ImVec2 imageSize(
-        eGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_Zoom,
-        eGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * eGFX_Zoom
+        EGFX_PHYSICAL_SCREEN_SIZE_X * TEXTURE_BUFFER_PIXEL_SIZE * egfx_zoom,
+        EGFX_PHYSICAL_SCREEN_SIZE_Y * TEXTURE_BUFFER_PIXEL_SIZE * egfx_zoom
     );
-    
+
     // Display the texture
-    ImGui::Image((ImTextureID)(intptr_t)eGFX_Texture, imageSize);
-    
+    ImGui::Image((ImTextureID)(intptr_t)egfx_texture, imageSize);
+
     ImGui::End();
-    
+
     // Rendering
     ImGui::Render();
 
     // Clear screen
-    SDL_SetRenderDrawColor(eGFX_Renderer, 26, 26, 26, 255); // Dark gray background
-    SDL_RenderClear(eGFX_Renderer);
-    
+    SDL_SetRenderDrawColor(egfx_renderer, 26, 26, 26, 255); // Dark gray background
+    SDL_RenderClear(egfx_renderer);
+
     // Render ImGui
-    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), eGFX_Renderer);
-    
+    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), egfx_renderer);
+
     // Present renderer
-    SDL_RenderPresent(eGFX_Renderer);
-    
+    SDL_RenderPresent(egfx_renderer);
+
     // Call vsync callback if provided
     if (VSyncCallback != NULL) {
         VSyncCallback(Image);
     }
 }
 
-void eGFX_SetBacklight(uint8_t BacklightValue) {
+void egfx_set_backlight(uint8_t BacklightValue) {
     // Implement if needed
 }

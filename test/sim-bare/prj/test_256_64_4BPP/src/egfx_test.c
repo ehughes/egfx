@@ -33,7 +33,7 @@ int AnimState;
 
 void init()
 {
-      eGFX_Init_ScalarAnimator(&LogoAnimator,
+      egfx_init_scalar_animator(&LogoAnimator,
         0,
         255,
         &logo_scale_int, //Point this to the thing you want to animate
@@ -42,7 +42,7 @@ void init()
         EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
     );
 
-    eGFX_Init_PointAnimator(&A[0],
+    egfx_init_point_animator(&A[0],
         (egfx_point){.x = 300, .y = 64}, //Start
         (egfx_point){.x = TITLE_X, .y = TITLE_Y}, //End
         &Line1, //Point this to the thing you want to animate
@@ -51,7 +51,7 @@ void init()
           EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
     );
 
-    eGFX_Init_PointAnimator(&A[1],
+    egfx_init_point_animator(&A[1],
         (egfx_point) { .x = 32, .y = 88 }, //Start
         (egfx_point) { .x = TITLE_X, .y = INFO_Y + (0*INFO_Y_SPACE) }, //End
         & Line2, //Point this to the thing you want to animate
@@ -60,7 +60,7 @@ void init()
         EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
     );
 
-    eGFX_Init_PointAnimator(&A[2],
+    egfx_init_point_animator(&A[2],
         (egfx_point) { .x = 32, .y = 88 }, //Start
         (egfx_point) { .x = 96, .y = INFO_Y + (1*INFO_Y_SPACE)}, //End
         &Line3, //Point this to the thing you want to animate
@@ -69,7 +69,7 @@ void init()
         EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
     );
 
-    eGFX_Init_PointAnimator(&A[3],
+    egfx_init_point_animator(&A[3],
         (egfx_point) { .x = 32, .y = 88 }, //Start
         (egfx_point) { .x = TITLE_X, .y = INFO_Y + (2*INFO_Y_SPACE) }, //End
         &Line4, //Point this to the thing you want to animate
@@ -78,7 +78,7 @@ void init()
         EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
     );
 
-    eGFX_Init_PointAnimator(&A[4],
+    egfx_init_point_animator(&A[4],
         (egfx_point){.x = 300, .y = 64}, //Start
         (egfx_point){.x = SEPARATOR_X, .y = 4}, //End
         &SeparatorStart, //Point this to the thing you want to animate
@@ -87,7 +87,7 @@ void init()
           EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
     );
 
-    eGFX_Init_PointAnimator(&A[5],
+    egfx_init_point_animator(&A[5],
         (egfx_point) { .x = 200, .y = 0 }, //Start
         (egfx_point) { .x = SEPARATOR_X, .y = 60  }, //End
         & SeparatorEnd, //Point this to the thing you want to animate
@@ -98,12 +98,12 @@ void init()
 
    Animators = (egfx_animator_header*)&A[0];
 
-    eGFX_Animator_AddToList(Animators,(egfx_animator_header*)&A[1]);
-    eGFX_Animator_AddToList(Animators,(egfx_animator_header*)&A[2]);
-    eGFX_Animator_AddToList(Animators,(egfx_animator_header*)&A[3]);
-    eGFX_Animator_AddToList(Animators,(egfx_animator_header*)&A[4]);
-    eGFX_Animator_AddToList(Animators,(egfx_animator_header*)&A[5]);
-    eGFX_Animator_AddToList(Animators,(egfx_animator_header*)&LogoAnimator);
+    egfx_animator_add_to_list(Animators,(egfx_animator_header*)&A[1]);
+    egfx_animator_add_to_list(Animators,(egfx_animator_header*)&A[2]);
+    egfx_animator_add_to_list(Animators,(egfx_animator_header*)&A[3]);
+    egfx_animator_add_to_list(Animators,(egfx_animator_header*)&A[4]);
+    egfx_animator_add_to_list(Animators,(egfx_animator_header*)&A[5]);
+    egfx_animator_add_to_list(Animators,(egfx_animator_header*)&LogoAnimator);
 
 
 }
@@ -111,11 +111,11 @@ void init()
 int main(int argc, char *argv[])
 {
   
-    eGFX_InitDriver(NULL);
+    egfx_init_driver(NULL);
 
     init();
 
-    eGFX_StartAnimators(Animators);
+    egfx_start_animators(Animators);
 
     // Replace ProcessSDL_Events with ProcessEvents
     while (!ProcessSimEvents())
@@ -124,27 +124,27 @@ int main(int argc, char *argv[])
 
 
 
-        egfx_fill(eGFX_BackBuffer[0], 0);
+        egfx_fill(egfx_back_buffer[0], 0);
 
-        eGFX_Animator_ProcessList(Animators);
+        egfx_animator_process_list(Animators);
 
-        egfx_text(eGFX_BackBuffer[0], "Chronos", Line1, &(egfx_text_config){.font = &font_10_14, .colored = false});
+        egfx_text(egfx_back_buffer[0], "Chronos", Line1, &(egfx_text_config){.font = &font_10_14, .colored = false});
 
-        egfx_text(eGFX_BackBuffer[0], "Serial: 10092", Line2, &(egfx_text_config){.font = &font_5_7, .colored = false});
+        egfx_text(egfx_back_buffer[0], "Serial: 10092", Line2, &(egfx_text_config){.font = &font_5_7, .colored = false});
 
-        egfx_text(eGFX_BackBuffer[0], "Firmware Version : v2.1", Line3, &(egfx_text_config){.font = &font_5_7, .colored = false});
+        egfx_text(egfx_back_buffer[0], "Firmware Version : v2.1", Line3, &(egfx_text_config){.font = &font_5_7, .colored = false});
 
-        egfx_text(eGFX_BackBuffer[0], "Bootloader : v1.1", Line4, &(egfx_text_config){.font = &font_5_7, .colored = false});
+        egfx_text(egfx_back_buffer[0], "Bootloader : v1.1", Line4, &(egfx_text_config){.font = &font_5_7, .colored = false});
 
-        eGFX_DrawLine(eGFX_BackBuffer[0], SeparatorStart.x, SeparatorStart.y, SeparatorEnd.x, SeparatorEnd.y, 0xFF);
+        egfx_draw_line(egfx_back_buffer[0], SeparatorStart.x, SeparatorStart.y, SeparatorEnd.x, SeparatorEnd.y, 0xFF);
 
-        egfx_blit_faded(eGFX_BackBuffer[0], (egfx_img *)&wn_w_text_83_56, (egfx_point){8, 4}, logo_scale_int);
+        egfx_blit_faded(egfx_back_buffer[0], (egfx_img *)&wn_w_text_83_56, (egfx_point){8, 4}, logo_scale_int);
 
         AnimState++;
         if (AnimState > 80)
         {
 
-            if (eGFX_AnimatorsAreComplete(Animators))
+            if (egfx_animators_are_complete(Animators))
             {
 
                 for (int i = 0; i < 6; i++)
@@ -172,21 +172,21 @@ int main(int argc, char *argv[])
                 LogoAnimator.end = 0;
                 LogoAnimator.current_frame = 0;
                 LogoAnimator.start = *LogoAnimator.current;
-                eGFX_StartAnimators(Animators);
+                egfx_start_animators(Animators);
             }
         }
         if (AnimState > 160)
         {
             AnimState = 0;
             init();
-            eGFX_StartAnimators(Animators);
+            egfx_start_animators(Animators);
 
         }
 
-        eGFX_Dump(eGFX_BackBuffer[0]);
+        egfx_dump(egfx_back_buffer[0]);
     }
 
-    eGFX_DeInitDriver();
+    egfx_deinit_driver();
     
     return 0;
 }

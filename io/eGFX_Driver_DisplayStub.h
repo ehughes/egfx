@@ -1,49 +1,49 @@
 #include "../../eGFX.h"
 
-#ifndef eGFX_DISPLAY_DRIVER_PRESENT
+#ifndef EGFX_DISPLAY_DRIVER_PRESENT
 
-#ifndef eGFX_DRIVER_STUB
-#define eGFX_DRIVER_STUB
+#ifndef EGFX_DRIVER_STUB
+#define EGFX_DRIVER_STUB
 
   /*
       Required symbols for any driver
   */
 
-#define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 128)
-#define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 64)
+#define EGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) 128)
+#define EGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) 64)
 
-#define eGFX_DISPLAY_DRIVER_IMG_TYPE   EGFX_IMG_4BPP
+#define EGFX_DISPLAY_DRIVER_IMG_TYPE   EGFX_IMG_4BPP
 
 
   /*
-      eGFX_InitDriver() should do any hardware related init for the display and
-      setup eGFX_BackBuffer
+      egfx_init_driver() should do any hardware related init for the display and
+      setup egfx_back_buffer
   */
 
-extern void  eGFX_InitDriver(egfx_vsync_callback_t VS));
+extern void  egfx_init_driver(egfx_vsync_callback_t VS);
 
 /*
-     eGFX_Dump() should dump an ImagePlane to the physical screen.
+     egfx_dump() should dump an ImagePlane to the physical screen.
 */
 
-  extern void eGFX_Dump(eGFX_ImagePlane *Image);
+  extern void egfx_dump(eGFX_ImagePlane *Image);
 
   /*
       A driver should expose at least one back buffer that is the physical screen size and have
       a matching color space.
   */
 
- 
-#define eGFX_NUM_BACKBUFFERS	2
 
-extern eGFX_ImagePlane eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS];
+#define EGFX_NUM_BACKBUFFERS	2
+
+extern eGFX_ImagePlane egfx_back_buffer[EGFX_NUM_BACKBUFFERS];
 
   /*
    *  Integer value 0 (off) to 100 (full on)
    *
    */
 
-  extern void eGFX_SetBacklight(uint8_t BacklightValue);
+  extern void egfx_set_backlight(uint8_t BacklightValue);
 
   #endif
 

@@ -88,7 +88,7 @@ typedef struct {
 #endif // EGFX_COLOR_H
 
 // Color conversion functions (requires egfx_types.h to be included first)
-#if defined(eGFX_DATA_TYPES_H) && !defined(EGFX_COLOR_FUNCTIONS_H)
+#if defined(EGFX_TYPES_H) && !defined(EGFX_COLOR_FUNCTIONS_H)
 #define EGFX_COLOR_FUNCTIONS_H
 
 // Alpha blending helper: blend foreground with background using alpha

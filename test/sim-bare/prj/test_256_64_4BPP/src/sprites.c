@@ -42,7 +42,8 @@ SPRITE_SECTION egfx_img neos_29x32 =
 {
 .color_type = 0, 
 .bits_per_pixel = 4, 
-.rsv = {0, 0}, 
+.flags = 0, 
+.rsv = 0, 
 .data = (uint8_t *)neos_29x32_Data, 
 .size_x = 29, 
 .size_y = 32, 
@@ -92,7 +93,8 @@ SPRITE_SECTION egfx_img rocket =
 {
 .color_type = 0, 
 .bits_per_pixel = 4, 
-.rsv = {0, 0}, 
+.flags = 0, 
+.rsv = 0, 
 .data = (uint8_t *)rocket_Data, 
 .size_x = 32, 
 .size_y = 32, 
@@ -334,7 +336,8 @@ SPRITE_SECTION egfx_img wn_112x64 =
 {
 .color_type = 0, 
 .bits_per_pixel = 4, 
-.rsv = {0, 0}, 
+.flags = 0, 
+.rsv = 0, 
 .data = (uint8_t *)wn_112x64_Data, 
 .size_x = 112, 
 .size_y = 64, 
@@ -408,7 +411,8 @@ SPRITE_SECTION egfx_img wn_56x32 =
 {
 .color_type = 0, 
 .bits_per_pixel = 4, 
-.rsv = {0, 0}, 
+.flags = 0, 
+.rsv = 0, 
 .data = (uint8_t *)wn_56x32_Data, 
 .size_x = 56, 
 .size_y = 32, 
@@ -552,7 +556,8 @@ SPRITE_SECTION egfx_img wn_84x48 =
 {
 .color_type = 0, 
 .bits_per_pixel = 4, 
-.rsv = {0, 0}, 
+.flags = 0, 
+.rsv = 0, 
 .data = (uint8_t *)wn_84x48_Data, 
 .size_x = 84, 
 .size_y = 48, 
@@ -663,7 +668,8 @@ SPRITE_SECTION egfx_img wn_w_text_62_48 =
 {
 .color_type = 0, 
 .bits_per_pixel = 4, 
-.rsv = {0, 0}, 
+.flags = 0, 
+.rsv = 0, 
 .data = (uint8_t *)wn_w_text_62_48_Data, 
 .size_x = 62, 
 .size_y = 48, 
@@ -811,7 +817,8 @@ SPRITE_SECTION egfx_img wn_w_text_83_56 =
 {
 .color_type = 0, 
 .bits_per_pixel = 4, 
-.rsv = {0, 0}, 
+.flags = 0, 
+.rsv = 0, 
 .data = (uint8_t *)wn_w_text_83_56_Data, 
 .size_x = 73, 
 .size_y = 56, 
@@ -997,7 +1004,8 @@ SPRITE_SECTION egfx_img wn_w_text_83_64 =
 {
 .color_type = 0, 
 .bits_per_pixel = 4, 
-.rsv = {0, 0}, 
+.flags = 0, 
+.rsv = 0, 
 .data = (uint8_t *)wn_w_text_83_64_Data, 
 .size_x = 83, 
 .size_y = 64, 

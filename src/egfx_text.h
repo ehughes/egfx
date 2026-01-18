@@ -2,8 +2,8 @@
 extern "C" {
 #endif
 
-#ifndef eGFX_TEXT_H
-#define eGFX_TEXT_H
+#ifndef EGFX_TEXT_H
+#define EGFX_TEXT_H
 
 #include "egfx_blit.h"
 

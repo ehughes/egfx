@@ -4,48 +4,48 @@
 extern "C" {
 #endif
 
-#ifndef eGFX_ANIMATOR_H
-#define eGFX_ANIMATOR_H
+#ifndef EGFX_ANIMATOR_H
+#define EGFX_ANIMATOR_H
 
-uint32_t eGFX_Animator_AddToList(egfx_animator_header * AnimatorList, egfx_animator_header *AnimatorToAdd);
+uint32_t egfx_animator_add_to_list(egfx_animator_header *animator_list, egfx_animator_header *animator_to_add);
 
-uint32_t eGFX_GetAnimatorCount(egfx_animator_header * Animator, egfx_animator_header **LastAnimator);
+uint32_t egfx_get_animator_count(egfx_animator_header *animator, egfx_animator_header **last_animator);
 
-bool eGFX_AnimatorIsComplete(egfx_animator_header * A);
+bool egfx_animator_is_complete(egfx_animator_header *a);
 
-bool eGFX_AnimatorsAreComplete(egfx_animator_header * AnimatorList);
+bool egfx_animators_are_complete(egfx_animator_header *animator_list);
 
-void eGFX_PauseAnimator(egfx_animator_header * A);
+void egfx_pause_animator(egfx_animator_header *a);
 
-void eGFX_StartAnimator(egfx_animator_header * A);
+void egfx_start_animator(egfx_animator_header *a);
 
-void eGFX_PauseAnimators(egfx_animator_header * AnimatorList);
+void egfx_pause_animators(egfx_animator_header *animator_list);
 
-void eGFX_StartAnimators(egfx_animator_header * AnimatorList);
+void egfx_start_animators(egfx_animator_header *animator_list);
 
-uint32_t eGFX_Animator_ProcessList(egfx_animator_header * AnimatorList);
+uint32_t egfx_animator_process_list(egfx_animator_header *animator_list);
 
-void eGFX_Init_PointAnimator(egfx_point_animator *A,
-	egfx_point Start,
-	egfx_point End,
-	egfx_point *Current, //Point this to the thing you want to animate
-	uint32_t LastFrame,      //Maximum allowed frames before forced convergence
-	egfx_pointf FractionToMove, //The amount of percentage of the distance the point should move each step. 
-	egfx_animator_mode Mode
+void egfx_init_point_animator(egfx_point_animator *a,
+	egfx_point start,
+	egfx_point end,
+	egfx_point *current, //Point this to the thing you want to animate
+	uint32_t last_frame,      //Maximum allowed frames before forced convergence
+	egfx_pointf fraction_to_move, //The amount of percentage of the distance the point should move each step.
+	egfx_animator_mode mode
 );
 
-void eGFX_Init_ScalarAnimator(egfx_scalar_animator *A,
-	int32_t Start,
-	int32_t End,
-	int32_t *Current, //Point this to the thing you want to animate
-	uint32_t LastFrame,      //Maximum allowed frames before forced convergence
-	float	 FractionToMove, //The amount of percentage of the distance the point should move each step.
-	egfx_animator_mode Mode
+void egfx_init_scalar_animator(egfx_scalar_animator *a,
+	int32_t start,
+	int32_t end,
+	int32_t *current, //Point this to the thing you want to animate
+	uint32_t last_frame,      //Maximum allowed frames before forced convergence
+	float fraction_to_move, //The amount of percentage of the distance the point should move each step.
+	egfx_animator_mode mode
 );
 
-void eGFX_Process_PointAnimator(egfx_point_animator *A);
+void egfx_process_point_animator(egfx_point_animator *a);
 
-void eGFX_Process_ScalarAnimator(egfx_scalar_animator *A);
+void egfx_process_scalar_animator(egfx_scalar_animator *a);
 
 
 #endif

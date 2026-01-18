@@ -5,8 +5,8 @@
 extern "C" {
 #endif
 
-#ifndef eGFX_PIXEL_OPS_H
-#define eGFX_PIXEL_OPS_H
+#ifndef EGFX_PIXEL_OPS_H
+#define EGFX_PIXEL_OPS_H
 
 // Forward declarations for functions used by inline operations
 void EGFX_WEAK egfx_bit_stream_put(uint8_t * BitStream, uint32_t Position, uint32_t PixelState);

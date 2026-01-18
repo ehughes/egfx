@@ -5,59 +5,58 @@
 extern "C" {
 #endif
 
-#ifndef eGFX_PRIMITIVE_OPS_H
-#define eGFX_PRIMITIVE_OPS_H
+#ifndef EGFX_PRIMITIVE_OPS_H
+#define EGFX_PRIMITIVE_OPS_H
 
-void  eGFX_DrawH_Line(egfx_img *Image,
-                               int32_t X_Start,
-                               int32_t X_Stop,
-                               int32_t Y,
-                               egfx_pixel_state PS);
+void EGFX_WEAK egfx_draw_h_line(egfx_img *image,
+                                int32_t x_start,
+                                int32_t x_stop,
+                                int32_t y,
+                                egfx_pixel_state ps);
 
-void EGFX_WEAK eGFX_DrawV_Line(egfx_img *Image,
-                              int32_t Y_Start,
-                              int32_t YStop,
-                              int32_t X,
-                              egfx_pixel_state PS);    
+void EGFX_WEAK egfx_draw_v_line(egfx_img *image,
+                                int32_t y_start,
+                                int32_t y_stop,
+                                int32_t x,
+                                egfx_pixel_state ps);
 
-void EGFX_WEAK eGFX_DrawSolidRectangle(egfx_img *Image,
-							egfx_rect * R,
-							egfx_pixel_state PS);
+void EGFX_WEAK egfx_draw_solid_rectangle(egfx_img *image,
+                                         egfx_rect *r,
+                                         egfx_pixel_state ps);
 
+void EGFX_WEAK egfx_draw_filled_box(egfx_img *image,
+                                    egfx_box *box,
+                                    egfx_pixel_state ps);
 
-void EGFX_WEAK eGFX_DrawFilledBox(egfx_img *Image,
-                                  egfx_box *Box,
-                                  egfx_pixel_state PS);                              
-                              
-void EGFX_WEAK eGFX_DrawBox(egfx_img *Image,
-                            egfx_box *Box,
-                            egfx_pixel_state PS);
+void EGFX_WEAK egfx_draw_box(egfx_img *image,
+                             egfx_box *box,
+                             egfx_pixel_state ps);
 
-void EGFX_WEAK eGFX_DrawLine(egfx_img *Image,
-                             int32_t X1,
-                             int32_t Y1,
-                             int32_t X2,
-                             int32_t Y2,
-                             egfx_pixel_state PS);      
+void EGFX_WEAK egfx_draw_line(egfx_img *image,
+                              int32_t x1,
+                              int32_t y1,
+                              int32_t x2,
+                              int32_t y2,
+                              egfx_pixel_state ps);
 
-void EGFX_WEAK eGFX_DrawCircle(egfx_img *Image,
-                               int32_t x0,
-                               int32_t y0,
-                               int32_t radius,
-                               egfx_pixel_state PS);      
+void EGFX_WEAK egfx_draw_circle(egfx_img *image,
+                                int32_t x0,
+                                int32_t y0,
+                                int32_t radius,
+                                egfx_pixel_state ps);
 
-void EGFX_WEAK eGFX_DrawCircleFromBackground(egfx_img *Image,
-	egfx_img *Background,
-	int32_t x0,
-	int32_t y0,
-	int32_t radius);
+void EGFX_WEAK egfx_draw_circle_from_background(egfx_img *image,
+                                                egfx_img *background,
+                                                int32_t x0,
+                                                int32_t y0,
+                                                int32_t radius);
 
-void EGFX_WEAK eGFX_DrawFilledCircle(egfx_img *Image,
-                                    int16_t x0,
-                                    int16_t y0,
-                                    int16_t radius,
-                                    egfx_pixel_state PS);                               
-         
+void EGFX_WEAK egfx_draw_filled_circle(egfx_img *image,
+                                       int16_t x0,
+                                       int16_t y0,
+                                       int16_t radius,
+                                       egfx_pixel_state ps);
+
 #endif
 
 #ifdef __cplusplus

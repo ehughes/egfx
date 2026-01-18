@@ -2,8 +2,8 @@
 extern "C" {
 #endif
 
-#ifndef eGFX_PLANE_H
-#define eGFX_PLANE_H
+#ifndef EGFX_PLANE_H
+#define EGFX_PLANE_H
      
      
 
