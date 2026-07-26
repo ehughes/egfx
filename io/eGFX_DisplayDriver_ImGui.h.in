@@ -1,7 +1,7 @@
-#include "eGFX_DataTypes.h"
+#include "egfx_types.h"
 
-#ifndef eGFX_DRIVER_IMGUI
-#define eGFX_DRIVER_IMGUI
+#ifndef EGFX_DRIVER_IMGUI
+#define EGFX_DRIVER_IMGUI
 
 /*
     ImGui Driver Specific Options
@@ -11,20 +11,20 @@
     The window used to render the simulated display can be enlarged for small screens, etc
     This is the default zoom level
 */
-#define eGFX_IMGUI_INITIAL_ZOOM  (@INITIAL_ZOOM@)
+#define EGFX_IMGUI_INITIAL_ZOOM  (@INITIAL_ZOOM@)
 
 /*
     For smaller matrix LED displays, OLEDs, etc there can be a small gap between pixels.
-    eGFX_IMGUI_SIM_GRID render the pixels as rectangles with some empty space in between.  
+    EGFX_IMGUI_SIM_GRID render the pixels as rectangles with some empty space in between.
 
-    Note that the zoom level gets applied to this. The actual space used by each pixel is PIXEL_SIZE + 2*eGFX_IMGUI_SIM_GRID_PIXEL_BORDER
+    Note that the zoom level gets applied to this. The actual space used by each pixel is PIXEL_SIZE + 2*EGFX_IMGUI_SIM_GRID_PIXEL_BORDER
 */
-#define eGFX_IMGUI_SIM_GRID      (@SIM_GRID_ENABLE@)
+#define EGFX_IMGUI_SIM_GRID      (@SIM_GRID_ENABLE@)
 
-#if eGFX_IMGUI_SIM_GRID == 1
-    #define eGFX_IMGUI_SIM_GRID_PIXEL_SIZE        (@SIM_GRID_PIXEL_SIZE@)
-    #define eGFX_IMGUI_SIM_GRID_PIXEL_BORDER      (@SIM_GRID_PIXEL_BORDER@)
-    #define eGFX_IMGUI_SIM_GRID_BACKGROUND_COLOR  (@SIM_GRID_BACKGROUND_COLOR@)
+#if EGFX_IMGUI_SIM_GRID == 1
+    #define EGFX_IMGUI_SIM_GRID_PIXEL_SIZE        (@SIM_GRID_PIXEL_SIZE@)
+    #define EGFX_IMGUI_SIM_GRID_PIXEL_BORDER      (@SIM_GRID_PIXEL_BORDER@)
+    #define EGFX_IMGUI_SIM_GRID_BACKGROUND_COLOR  (@SIM_GRID_BACKGROUND_COLOR@)
 #endif
 
 
@@ -32,16 +32,16 @@
 /*
      Required symbols for any driver
 */
-#define eGFX_DISPLAY_DRIVER_PRESENT
+#define EGFX_DISPLAY_DRIVER_PRESENT
 
-#define eGFX_DISPLAY_DRIVER_IMAGE_PLANE_TYPE   @SIM_IMAGE_PLANE_TYPE@
+#define EGFX_DISPLAY_DRIVER_IMG_TYPE   @SIM_IMG_TYPE@
 
-#define eGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) @SIM_PHYSICAL_SCREEN_SIZE_X@)
-#define eGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) @SIM_PHYSICAL_SCREEN_SIZE_Y@)
+#define EGFX_PHYSICAL_SCREEN_SIZE_X     ((uint16_t) @SIM_PHYSICAL_SCREEN_SIZE_X@)
+#define EGFX_PHYSICAL_SCREEN_SIZE_Y     ((uint16_t) @SIM_PHYSICAL_SCREEN_SIZE_Y@)
 
 /*
-    eGFX_InitDriver() should do any hardware related init for the display and
-    setup eGFX_BackBuffer
+    egfx_init_driver() should do any hardware related init for the display and
+    setup egfx_back_buffer
 */
 #ifdef __cplusplus
 extern "C" {
@@ -52,32 +52,32 @@ extern "C" {
 */
 extern int ProcessSimEvents();
 
-extern void eGFX_InitDriver(eGFX_VSyncCallback_t VS);
+extern void egfx_init_driver(egfx_vsync_callback_t VS);
 
 /*
-   eGFX_DeInitDriver() is provided in case you want some way of shutting down the graphics
+   egfx_deinit_driver() is provided in case you want some way of shutting down the graphics
 */
-extern void eGFX_DeInitDriver();
+extern void egfx_deinit_driver();
 
 /*
-    eGFX_Dump() should dump an ImagePlane to the physical screen.
+    egfx_dump() should dump an ImagePlane to the physical screen.
 */
-extern void eGFX_Dump(eGFX_ImagePlane *Image);
+extern void egfx_dump(egfx_img *Image);
 
 /*
     A driver should expose at least one back buffer that is the physical screen size and have
     a matching color space.
 */
-#define eGFX_NUM_BACKBUFFERS 2
+#define EGFX_NUM_BACKBUFFERS 2
 
-extern eGFX_ImagePlane eGFX_BackBuffer[eGFX_NUM_BACKBUFFERS];
+extern egfx_img* egfx_back_buffer[EGFX_NUM_BACKBUFFERS];
 
-extern uint32_t eGFX_GetInactiveBackBuffer();
+extern uint32_t egfx_get_inactive_back_buffer();
 
 /*
 *  Integer value 0 (off) to 100 (full on)
 */
-extern void eGFX_SetBacklight(uint8_t BacklightValue);
+extern void egfx_set_backlight(uint8_t BacklightValue);
 
 #ifdef __cplusplus
 }

@@ -6,15 +6,15 @@ static int Cnt = 0;
 
 #define NUM_CIRCLES	18
 
-eGFX_Obj_Circle Circle[NUM_CIRCLES];
-eGFX_Point_Animator PointAnim[NUM_CIRCLES];
-eGFX_Scalar_Animator ScalarAnim[NUM_CIRCLES];
+egfx_obj_circle Circle[NUM_CIRCLES];
+egfx_point_animator PointAnim[NUM_CIRCLES];
+egfx_scalar_animator ScalarAnim[NUM_CIRCLES];
 
 #define FRAC_X	0.16f
 #define FRAC_Y  0.16f
 #define MAX_FRAMES	200
-#define ANIM_MODE_POS eGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
-#define ANIM_MODE_RAD eGFX_ANIMATOR_MODE__LINEAR
+#define ANIM_MODE_POS EGFX_ANIMATOR_MODE__FRACTIONAL_BISECT
+#define ANIM_MODE_RAD EGFX_ANIMATOR_MODE__LINEAR
 
 uint32_t AnimPhase = 0;
 
@@ -28,7 +28,7 @@ static eGFX_ImagePlane * BackgroundImage;
 
 static eGFX_ImagePlane * ForegroundImage;
 
-static eGFX_PixelState BackgroundColor = 0;
+static egfx_pixel_state BackgroundColor = 0;
 
 void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 {
@@ -39,28 +39,28 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 
 	CircleTestActiveBuffer = 0;
 
-	ForegroundImage = &eGFX_BackBuffer[CircleTestActiveBuffer];
+	ForegroundImage = &egfx_back_buffer[CircleTestActiveBuffer];
 
 
 	if (Message != NULL)
 	{
-		for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++)
+		for (int i = 0; i < EGFX_NUM_BACKBUFFERS; i++)
 		{
-			eGFX_Blit(&eGFX_BackBuffer[i], 0, 0, BackgroundImage);
+			egfx_blit(&egfx_back_buffer[i], BackgroundImage, (egfx_point){0, 0});
 		}
 	}
 	else
 	{
-		eGFX_Rect R;
+		egfx_rect R;
 
 		R.P1.X = 0;
 		R.P1.Y = 0;
-		R.P2.X = eGFX_PHYSICAL_SCREEN_SIZE_X - 1;
-		R.P2.Y = eGFX_PHYSICAL_SCREEN_SIZE_Y - 1;
+		R.P2.X = EGFX_PHYSICAL_SCREEN_SIZE_X - 1;
+		R.P2.Y = EGFX_PHYSICAL_SCREEN_SIZE_Y - 1;
 
-		for (int i = 0; i < eGFX_NUM_BACKBUFFERS; i++)
+		for (int i = 0; i < EGFX_NUM_BACKBUFFERS; i++)
 		{
-			eGFX_DrawSolidRectangle(&eGFX_BackBuffer[i], &R, BackgroundColor);
+			egfx_draw_solid_rectangle(&egfx_back_buffer[i], &R, BackgroundColor);
 		}
 	}
 
@@ -68,7 +68,7 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 	{
 		eGFX_InitObject_Circle(&Circle[i], 0, &ForegroundImage);
 
-		if (eGFX_NUM_BACKBUFFERS == 2)
+		if (EGFX_NUM_BACKBUFFERS == 2)
 			Circle[i].DoubleBuffered = true;
 		else
 			Circle[i].DoubleBuffered = false;
@@ -99,41 +99,41 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 			Circle[i].Header.BackgroundColor = &BackgroundColor;
 		}
 
-		eGFX_Init_PointAnimator(&PointAnim[i],
+		egfx_init_point_animator(&PointAnim[i],
 			Circle[i].Position,
-			(eGFX_Point) {
+			(egfx_point) {
 			rand() % 240 + 120, rand() % 240 + 120
 		},
 			&(Circle[i].Position), //Point this to the thing you want to animate
 				MAX_FRAMES,      //Maximum allowed frames before forced convergence
-				(eGFX_PointF) {
+				(egfx_pointf) {
 				FRAC_X, FRAC_Y
 			}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-				(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+				(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 					ANIM_MODE_POS
 					);
 
 
-		eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+		egfx_init_scalar_animator(&ScalarAnim[i],
 			Circle[i].Radius,
 			10,
 			&Circle[i].Radius, //Point this to the thing you want to animate
 			25,     //Maximum allowed frames before forced convergence
 			0.1f,//The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-			(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+			(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 			ANIM_MODE_RAD
 		);
 
 		if (i != 0)
-			eGFX_AddAnimator(AnimatorList, &PointAnim[i]);
+			egfx_animator_add_to_list(AnimatorList, &PointAnim[i]);
 	}
 
 	for (int i = 0; i < NUM_CIRCLES; i++)
 	{
-		eGFX_AddAnimator(AnimatorList, &ScalarAnim[i]);
+		egfx_animator_add_to_list(AnimatorList, &ScalarAnim[i]);
 	}
 
-	eGFX_StartAnimators(AnimatorList);
+	egfx_start_animators(AnimatorList);
 
 
 
@@ -166,7 +166,7 @@ void Activity__Circle_Enter(uint32_t MessageID, void *Message)
 void Activity__Circle_Process()
 {
 
-	if (eGFX_NUM_BACKBUFFERS == 2)
+	if (EGFX_NUM_BACKBUFFERS == 2)
 	{
 		CircleTestActiveBuffer++;
 
@@ -176,16 +176,16 @@ void Activity__Circle_Process()
 	{
 		CircleTestActiveBuffer = 0;
 	}
-	ForegroundImage = &eGFX_BackBuffer[CircleTestActiveBuffer];
+	ForegroundImage = &egfx_back_buffer[CircleTestActiveBuffer];
 
 	eGFX_ProcessObjects(ObjectList, eGFX_OBJECT_DRAW_CMD__RESTORE);
 
 	eGFX_ProcessObjects(ObjectList, eGFX_OBJECT_DRAW_CMD__PAINT);
 
-	eGFX_ProcessAnimators(AnimatorList);
+	egfx_animator_process_list(AnimatorList);
 
 
-	if (eGFX_AnimatorsAreComplete(AnimatorList) == eGFX_TRUE)
+	if (egfx_animators_are_complete(AnimatorList) == eGFX_TRUE)
 	{
 
 		AnimPhase++;
@@ -200,30 +200,30 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 140.0f * cosf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 140.0f * sinf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 140.0f * cosf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 140.0f * sinf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
-					(eGFX_Point) {
+					(egfx_point) {
 					x, y
 				},
 					&(Circle[i].Position), //Point this to the thing you want to animate
 						MAX_FRAMES,      //Maximum allowed frames before forced convergence
-						(eGFX_PointF) {
+						(egfx_pointf) {
 						FRAC_X, FRAC_Y
 					}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-						(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+						(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					8,
 					&Circle[i].Radius, //Point this to the thing you want to animate
 					20,     //Maximum allowed frames before forced convergence
 					0.1f,//The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-					(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+					(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 					ANIM_MODE_RAD
 				);
 			}
@@ -233,30 +233,30 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 180.0f * cosf((float)(i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 180.0f * sinf((float)(i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 180.0f * cosf((float)(i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 180.0f * sinf((float)(i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
-					(eGFX_Point) {
+					(egfx_point) {
 					x, y
 				},
 					&(Circle[i].Position), //Point this to the thing you want to animate
 						MAX_FRAMES,      //Maximum allowed frames before forced convergence
-						(eGFX_PointF) {
+						(egfx_pointf) {
 						FRAC_X, FRAC_Y
 					}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-						(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+						(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					9,
 					&Circle[i].Radius, //Point this to the thing you want to animate
 					30,     //Maximum allowed frames before forced convergence
 					0.1f,//The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-					(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+					(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 					ANIM_MODE_RAD
 				);
 			}
@@ -266,30 +266,30 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 180.0f * cosf((float)(i + 2) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 180.0f * sinf((float)(i + 2) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 180.0f * cosf((float)(i + 2) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 180.0f * sinf((float)(i + 2) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
-					(eGFX_Point) {
+					(egfx_point) {
 					x, y
 				},
 					&(Circle[i].Position), //Point this to the thing you want to animate
 						MAX_FRAMES,      //Maximum allowed frames before forced convergence
-						(eGFX_PointF) {
+						(egfx_pointf) {
 						FRAC_X, FRAC_Y
 					}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-						(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+						(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					9,
 					&Circle[i].Radius, //Point this to the thing you want to animate
 					30,     //Maximum allowed frames before forced convergence
 					0.1,//The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-					(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+					(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 					ANIM_MODE_RAD
 				);
 			}
@@ -299,31 +299,31 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 100.0 * cosf((float)(NUM_CIRCLES / 2 - i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 100.0 * sinf((float)(NUM_CIRCLES / 2 - i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 100.0 * cosf((float)(NUM_CIRCLES / 2 - i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 100.0 * sinf((float)(NUM_CIRCLES / 2 - i - 1) * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
-					(eGFX_Point) {
+					(egfx_point) {
 					x, y
 				},
 					&(Circle[i].Position), //Point this to the thing you want to animate
 						MAX_FRAMES,      //Maximum allowed frames before forced convergence
-						(eGFX_PointF) {
+						(egfx_pointf) {
 						FRAC_X, FRAC_Y
 					}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-						(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+						(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					5,
 					&Circle[i].Radius, //Point this to the thing you want to animate
 					30,     //Maximum allowed frames before forced convergence
 					0.1f,//The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-					(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+					(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 					ANIM_MODE_RAD
 				);
 			}
@@ -333,31 +333,31 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = i * (eGFX_PHYSICAL_SCREEN_SIZE_X / (NUM_CIRCLES)) + (eGFX_PHYSICAL_SCREEN_SIZE_X / (NUM_CIRCLES)) / 2;
-				float y = eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = i * (EGFX_PHYSICAL_SCREEN_SIZE_X / (NUM_CIRCLES)) + (EGFX_PHYSICAL_SCREEN_SIZE_X / (NUM_CIRCLES)) / 2;
+				float y = EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
-					(eGFX_Point) {
+					(egfx_point) {
 					x, y
 				},
 					&(Circle[i].Position), //Point this to the thing you want to animate
 						MAX_FRAMES,      //Maximum allowed frames before forced convergence
-						(eGFX_PointF) {
+						(egfx_pointf) {
 						FRAC_X, FRAC_Y
 					}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-						(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+						(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					5,
 					&Circle[i].Radius, //Point this to the thing you want to animate
 					30,     //Maximum allowed frames before forced convergence
 					0.1,//The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-					(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+					(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 					ANIM_MODE_RAD
 				);
 			}
@@ -367,30 +367,30 @@ void Activity__Circle_Process()
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
 
-				float x = 0 * cosf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_X / 2;
-				float y = 0 * sinf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + eGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
+				float x = 0 * cosf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_X / 2;
+				float y = 0 * sinf((float)i * M_PI * 2.0f / (float)NUM_CIRCLES) + EGFX_PHYSICAL_SCREEN_SIZE_Y / 2;
 
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
-					(eGFX_Point) {
+					(egfx_point) {
 					x, y
 				},
 					&(Circle[i].Position), //Point this to the thing you want to animate
 						MAX_FRAMES,      //Maximum allowed frames before forced convergence
-						(eGFX_PointF) {
+						(egfx_pointf) {
 						FRAC_X, FRAC_Y
 					}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-						(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+						(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					1,
 					&Circle[i].Radius, //Point this to the thing you want to animate
 					20,     //Maximum allowed frames before forced convergence
 					0.1,//The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-					(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+					(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 					ANIM_MODE_RAD
 				);
 			}
@@ -399,38 +399,38 @@ void Activity__Circle_Process()
 		{
 			for (int i = 0; i < NUM_CIRCLES; i++)
 			{
-				eGFX_Init_PointAnimator(&PointAnim[i],
+				egfx_init_point_animator(&PointAnim[i],
 					Circle[i].Position,
-					(eGFX_Point) {
+					(egfx_point) {
 					(rand() % 480), (rand() % 480)
 				},
 					&(Circle[i].Position), //Point this to the thing you want to animate
 						MAX_FRAMES,      //Maximum allowed frames before forced convergence
-						(eGFX_PointF) {
+						(egfx_pointf) {
 						FRAC_X, FRAC_Y
 					}, //The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-						(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+						(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 							ANIM_MODE_POS
 							);
 
-				eGFX_Init_ScalarAnimator(&ScalarAnim[i],
+				egfx_init_scalar_animator(&ScalarAnim[i],
 					Circle[i].Radius,
 					rand() % 15,
 					&Circle[i].Radius, //Point this to the thing you want to animate
 					20,     //Maximum allowed frames before forced convergence
 					0.1,//The amount of percentage of the distance the point should move each step. Values <=0 or >= 1 are set to 0.5
-					(eGFX_ObjectHeader *)&Circle[i], // Object to Mark when animation is stepped;
+					(egfx_object_header *)&Circle[i], // Object to Mark when animation is stepped;
 					ANIM_MODE_RAD
 				);
 			}
 		}
 
-		eGFX_StartAnimators(AnimatorList);
+		egfx_start_animators(AnimatorList);
 	}
 
 	eGFX_WaitForV_Sync();
 
-	eGFX_Dump(&eGFX_BackBuffer[CircleTestActiveBuffer]);
+	egfx_dump(&egfx_back_buffer[CircleTestActiveBuffer]);
 
 
 	return;

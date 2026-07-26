@@ -8,18 +8,18 @@ endif()
 
 
 
-set(eGFX_SRC 
+set(eGFX_SRC
 
-	${CMAKE_CURRENT_LIST_DIR}/eGFX_Animator.c
-    ${CMAKE_CURRENT_LIST_DIR}/eGFX_Blit.c
-    ${CMAKE_CURRENT_LIST_DIR}/eGFX_PixelOps.c
-    ${CMAKE_CURRENT_LIST_DIR}/eGFX_Plane.c
-    ${CMAKE_CURRENT_LIST_DIR}/eGFX_PrimitiveOps.c
-    ${CMAKE_CURRENT_LIST_DIR}/eGFX_StringOps.c
-                       
-    ${CMAKE_CURRENT_LIST_DIR}/FONT_3_5_1BPP.c
-    ${CMAKE_CURRENT_LIST_DIR}/FONT_5_7_1BPP.c
-    ${CMAKE_CURRENT_LIST_DIR}/FONT_10_14_1BPP.c
+	${CMAKE_CURRENT_LIST_DIR}/egfx_animator.c
+    ${CMAKE_CURRENT_LIST_DIR}/egfx_blit.c
+    ${CMAKE_CURRENT_LIST_DIR}/egfx_pixel_ops.c
+    ${CMAKE_CURRENT_LIST_DIR}/egfx_plane.c
+    ${CMAKE_CURRENT_LIST_DIR}/egfx_primitive_ops.c
+    ${CMAKE_CURRENT_LIST_DIR}/egfx_string_ops.c
+
+    ${CMAKE_CURRENT_LIST_DIR}/font_3_5.c
+    ${CMAKE_CURRENT_LIST_DIR}/font_5_7.c
+    ${CMAKE_CURRENT_LIST_DIR}/font_10_14.c
     )
                         
 

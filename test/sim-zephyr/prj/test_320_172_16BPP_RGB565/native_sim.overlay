@@ -1,0 +1,16 @@
+/*
+ * Device tree overlay for native_sim display
+ * Configures SDL display driver for 320x172 RGB565
+ */
+
+/ {
+	chosen {
+		zephyr,display = &sdl_dc;
+	};
+};
+
+&sdl_dc {
+	status = "okay";
+	width = <320>;
+	height = <172>;
+};

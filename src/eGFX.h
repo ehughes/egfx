@@ -3,37 +3,31 @@
 extern "C" {
 #endif
 
-#ifndef _eGFX_H__
-#define _eGFX_H__
+#ifndef EGFX_H
+#define EGFX_H
 
-#define eGFX_API_LEVEL             2
-#define eGFX_REVISION              0
+#define EGFX_API_LEVEL             2
+#define EGFX_REVISION              0
 
-#include "eGFX_Config.h"
+#include "egfx_config.h"
 
-#include "eGFX_DataTypes.h"
+#include "egfx_types.h"
 
-#include "eGFX_PixelOps.h"
-#include "eGFX_PrimitiveOps.h"
-#include "eGFX_StringOps.h"
-#include "eGFX_Plane.h"
-#include "eGFX_Blit.h"
+#include "egfx_pixel_ops.h"
+#include "egfx_primitive_ops.h"
+#include "egfx_text.h"
+#include "egfx_plane.h"
+#include "egfx_blit.h"
 
-#include "FONT_3_5_1BPP.h"
-#include "FONT_5_7_1BPP.h"
-#include "FONT_10_14_1BPP.h"
+#include "font_3_5.h"
+#include "font_5_7.h"
+#include "font_10_14.h"
 
-#include "eGFX_Animator.h"
+#include "egfx_animator.h"
 
-#include "eGFX_InputTypes.h"
-#include "eGFX_Input.h"
-
-
-#include "eGFX_Activity.h"
 
 #endif
 
 #ifdef __cplusplus
  }
 #endif
-

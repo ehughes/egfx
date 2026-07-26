@@ -1,27 +1,27 @@
 #include "../../eGFX.h"
 
-#ifdef eGFX_DRIVER_STUB
+#ifdef EGFX_DRIVER_STUB
 
-eGFX_ImagePlane eGFX_BackBuffer;
+eGFX_ImagePlane egfx_back_buffer;
 
-uint8_t BackBufferStore[eGFX_CALCULATE_4BPP_IMAGE_STORAGE_SPACE_SIZE(eGFX_PHYSICAL_SCREEN_SIZE_X,eGFX_PHYSICAL_SCREEN_SIZE_Y)];
+uint8_t BackBufferStore[EGFX_CALC_4BPP_IMG_STORAGE_SPACE_SIZE(EGFX_PHYSICAL_SCREEN_SIZE_X,EGFX_PHYSICAL_SCREEN_SIZE_Y)];
 
-eGFX_VSyncCallback_t *VSyncCallback;
+egfx_vsync_callback_t *VSyncCallback;
 
-void eGFX_InitDriver(eGFX_VSyncCallback_t VS)
+void egfx_init_driver(egfx_vsync_callback_t VS)
 {
-    eGFX_ImagePlaneInit(&eGFX_BackBuffer,
-                        BackBufferStore,
-                        eGFX_PHYSICAL_SCREEN_SIZE_X,
-                        eGFX_PHYSICAL_SCREEN_SIZE_Y,
-                        eGFX_IMAGE_PLANE_4BPP);
+    egfx_image_plane_init(&egfx_back_buffer,
+                          BackBufferStore,
+                          EGFX_PHYSICAL_SCREEN_SIZE_X,
+                          EGFX_PHYSICAL_SCREEN_SIZE_Y,
+                          EGFX_IMG_4BPP);
 
 
     VSyncCallback = VS;
-  
+
 }
 
-void eGFX_Dump(eGFX_ImagePlane *Image)
+void egfx_dump(eGFX_ImagePlane *Image)
 {
 
     if (VSyncCallback != NULL)
@@ -31,7 +31,7 @@ void eGFX_Dump(eGFX_ImagePlane *Image)
 
 }
 
-void eGFX_SetBacklight(uint8_t BacklightValue)
+void egfx_set_backlight(uint8_t BacklightValue)
 {
 
 
